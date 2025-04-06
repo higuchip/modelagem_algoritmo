@@ -1,6 +1,6 @@
 # Modelagem e Algoritmos para Distribuição de Espécies
 
-Este repositório contém uma apresentação de slides sobre modelagem de distribuição de espécies no contexto de mudanças climáticas, focando em conceitos de algoritmos e aprendizado de máquina.
+Este repositório contém uma apresentação de slides sobre modelagem de distribuição de espécies no contexto de mudança climática, focando em conceitos de algoritmos e aprendizado de máquina.
 
 ## Conteúdo
 
