@@ -15,7 +15,7 @@ A apresentação aborda os seguintes tópicos:
 ## Como visualizar
 
 A apresentação está disponível através do GitHub Pages em:
-[https://higuchip.github.io/modelagem_altoritmo/](https://higuchip.github.io/modelagem_altoritmo/)
+[https://higuchip.github.io/modelagem_algoritmo/](https://higuchip.github.io/modelagem_algoritmo/)
 
 ## Tecnologias utilizadas
 
