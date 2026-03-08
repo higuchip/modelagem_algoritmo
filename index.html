@@ -3,87 +3,98 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Introdução a Modelos e Algoritmos</title>
+  <title>Modelos e Algoritmos</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
   <style>
     :root {
-      --main-color: #3498db;
-      --accent-color: #2980b9;
+      --main-color: #2c7a3f;
+      --accent-color: #1a5c2e;
       --text-color: #333;
       --background-color: #fff;
-      --box-bg-color: rgba(52, 152, 219, 0.1);
+      --box-bg-color: rgba(44, 122, 63, 0.08);
+      --warning-color: #d35400;
     }
-    
+
     body {
       background-color: var(--background-color);
       color: var(--text-color);
     }
-    
+
     .reveal .slides {
       text-align: left;
     }
-    
+
     .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
       text-transform: none;
       color: var(--main-color);
       margin-bottom: 0.5em;
-      font-weight: 500;
+      font-weight: 600;
     }
-    
-    .reveal h1 { font-size: 2.2em; }
-    .reveal h2 { font-size: 1.8em; }
-    .reveal h3 { font-size: 1.4em; }
-    
+
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.4em; margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.1em; margin-bottom: 0.3em; }
+
     .reveal p, .reveal li {
-      font-size: 0.9em;
-      line-height: 1.5;
+      font-size: 0.78em;
+      line-height: 1.4;
     }
-    
-    .reveal .small { font-size: 0.7em; }
+
+    .reveal .small { font-size: 0.6em; }
     .reveal .center { text-align: center; }
-    
+
     .reveal .highlight {
       color: var(--accent-color);
-      font-weight: 500;
+      font-weight: 600;
     }
-    
+
     .reveal .box {
       border: 1px solid var(--main-color);
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 5px;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
       background-color: var(--box-bg-color);
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    
+
+    .reveal .box-warning {
+      border: 1px solid var(--warning-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(211, 84, 0, 0.08);
+    }
+
     .reveal .columns {
       display: flex;
       justify-content: space-between;
-      gap: 20px;
+      gap: 15px;
+      align-items: center;
     }
-    
+
     .reveal .column {
       flex: 1;
     }
-    
+
     .reveal .decision-tree {
       font-family: monospace;
       white-space: pre;
-      line-height: 1.3;
+      line-height: 1.4;
       font-size: 0.7em;
-      background-color: #f8f8f8;
-      padding: 10px;
-      border-radius: 5px;
+      background-color: #f0f7f0;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #cde6cd;
     }
-    
+
     .reveal img {
       border: none !important;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
       background: none !important;
-      border-radius: 5px;
+      border-radius: 8px;
     }
-    
+
     .reveal .cite {
       font-size: 0.6em;
       font-style: italic;
@@ -91,445 +102,606 @@
       margin-top: 20px;
       color: #777;
     }
-    
+
     .reveal ol, .reveal ul {
-      margin-left: 1em;
+      margin-left: 0.8em;
     }
-    
+
     .reveal li {
-      margin-bottom: 0.5em;
+      margin-bottom: 0.25em;
     }
-    
-    /* Navegação mais sutil */
+
+    .reveal .slides section {
+      padding: 10px 40px;
+    }
+
+    .reveal .emoji {
+      font-size: 1.2em;
+      margin-right: 5px;
+    }
+
+    .reveal .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: var(--main-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 0.8em;
+      margin-right: 8px;
+    }
+
     .reveal .controls {
       opacity: 0.6;
     }
-    
+
     .reveal .progress {
       height: 5px;
+      color: var(--main-color);
     }
   </style>
 </head>
 <body>
   <div class="reveal">
     <div class="slides">
-      <!-- Slide 1 -->
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: CAPA -->
+      <!-- ============================================ -->
       <section>
-        <h1>Introdução a Modelos e Algoritmos</h1>
-        <h3>Modelagem de Distribuição de Espécies no Contexto de Mudança Climática</h3>
-        <p class="small">Disciplina: Mudança Climática</p>
-        <p class="small">Curso: Engenharia Florestal</p>
-        <p class="small">Prof: Pedro Higuchi</p>
+        <h1>Modelos e Algoritmos</h1>
+        <h3>Como prever onde as plantas podem viver<br>em um clima que muda?</h3>
+        <br>
+        <p class="small">Disciplina: Mudanças Climáticas</p>
+        <p class="small">Engenharia Florestal - UDESC</p>
+        <p class="small">Prof. Pedro Higuchi</p>
       </section>
 
-      <!-- Slide 2 -->
+      <!-- ============================================ -->
+      <!-- SLIDE 2: ROTEIRO -->
+      <!-- ============================================ -->
       <section>
-        <h2>O que veremos hoje</h2>
-        <ul>
-          <li>O que são modelos e para que servem</li>
-          <li>O que são algoritmos</li>
-          <li>Modelos de distribuição de espécies</li>
-          <li>Introdução ao aprendizado de máquina</li>
-          <li>Entendendo o algoritmo Random Forest</li>
-          <li>Configuração de modelos no TAIPA</li>
-        </ul>
+        <h2>Roteiro da aula</h2>
+        <ol>
+          <li>O que são <strong>modelos</strong> e para que servem</li>
+          <li>O que são <strong>algoritmos</strong></li>
+          <li>Por que modelar onde as espécies vivem?</li>
+          <li>Como o computador "aprende" padrões</li>
+          <li>O algoritmo <strong>Random Forest</strong> (Floresta Aleatória)</li>
+          <li>Prática no <strong>TAIPA</strong></li>
+        </ol>
       </section>
 
-      <!-- Slide 3 -->
+      <!-- ============================================ -->
+      <!-- SLIDE 3: O QUE É UM MODELO -->
+      <!-- ============================================ -->
       <section>
         <section>
           <h2>O que é um modelo?</h2>
-          <p>Um modelo é uma <span class="highlight">representação simplificada da realidade</span>, criada para entender ou prever algum aspecto do mundo real.</p>
+          <p>Um modelo é uma <span class="highlight">versão simplificada do mundo real</span>.</p>
+          <p>Usamos modelos o tempo todo, mesmo sem perceber!</p>
           <div class="box center">
             "Todos os modelos estão errados, mas alguns são úteis."<br>
             <span class="small">- George Box, estatístico</span>
           </div>
         </section>
-        
+
         <section>
-          <h3>Exemplos de modelos no cotidiano</h3>
+          <h3>Modelos do dia a dia</h3>
           <div class="columns">
             <div class="column">
-              <img src="imagens/mapa.png" alt="Mapa ilustrativo" style="display: block; margin: 0 auto; max-width: 300px;">
-              <p class="center">Um mapa é um modelo do território</p>
+              <img src="imagens/mapa.jpg" alt="Mapa ilustrativo" style="display: block; margin: 0 auto; max-width: 300px;">
+              <p class="center">Um <strong>mapa</strong> é um modelo do território</p>
             </div>
             <div class="column">
-              <img src="imagens/plantabaixa.png" alt="Mapa ilustrativo" style="display: block; margin: 0 auto; max-width: 420px;">
-              <p class="center">Uma planta baixa é um modelo de uma casa</p>
+              <img src="imagens/plantabaixa.jpg" alt="Planta baixa" style="display: block; margin: 0 auto; max-width: 420px;">
+              <p class="center">Uma <strong>planta baixa</strong> é um modelo de uma casa</p>
             </div>
           </div>
         </section>
-        
+
         <section>
           <h3>Tipos de modelos</h3>
           <ul>
-            <li><strong>Modelos conceituais:</strong> explicam como um sistema funciona</li>
-            <li><strong>Modelos físicos:</strong> representações físicas em escala</li>
-            <li><strong>Modelos matemáticos:</strong> usam equações para representar relações</li>
-            <li><strong>Modelos estatísticos:</strong> usam dados para estabelecer padrões</li>
-            <li><strong>Modelos computacionais:</strong> simulam sistemas complexos</li>
+            <li><strong>Conceitual:</strong> desenho que explica um sistema <span class="small">(ex: ciclo da água)</span></li>
+            <li><strong>Físico:</strong> miniatura ou réplica <span class="small">(ex: maquete)</span></li>
+            <li><strong>Matemático:</strong> equações <span class="small">(ex: crescimento de árvore)</span></li>
+            <li><strong>Computacional:</strong> simulações no computador <span class="small">(ex: onde uma planta pode viver)</span></li>
           </ul>
         </section>
       </section>
 
-      <!-- Slide 4 -->
+      <!-- ============================================ -->
+      <!-- SLIDE 4: O QUE É UM ALGORITMO -->
+      <!-- ============================================ -->
       <section>
         <section>
           <h2>O que é um algoritmo?</h2>
-          <p>Um algoritmo é uma <span class="highlight">sequência de passos bem definidos</span> para resolver um problema ou realizar uma tarefa.</p>
+          <p>Um algoritmo é um <span class="highlight">passo a passo</span> para resolver um problema.</p>
+          <p>Pense como uma receita: você segue as instruções na ordem certa e chega ao resultado.</p>
         </section>
-        
+
         <section>
-          <h3>Algoritmos no cotidiano</h3>
+          <h3>Algoritmos do dia a dia</h3>
           <div class="columns">
             <div class="column">
-              <img src="imagens/receita.png" alt="Ilustração de uma receita de bolo" style="display: block; margin: 0 auto; max-width: 300px;">
-              <p class="center">Uma receita de bolo</p>
+              <img src="imagens/receita.jpg" alt="Receita de bolo" style="display: block; margin: 0 auto; max-width: 300px;">
+              <p class="center">Uma <strong>receita de bolo</strong></p>
             </div>
             <div class="column">
-              <img src="imagens/instrucaomovel.png" alt="Ilustração de instruções para montar um móvel" style="display: block; margin: 0 auto; max-width: 300px;">
-              <p class="center">Instruções para montar um móvel</p>
+              <img src="imagens/instrucaomovel.jpg" alt="Instruções de montagem" style="display: block; margin: 0 auto; max-width: 300px;">
+              <p class="center"><strong>Instruções</strong> para montar um móvel</p>
             </div>
           </div>
         </section>
-        
+
         <section>
-          <h3>Exemplo: Calculando uma média</h3>
+          <h3>Exemplo simples: calcular uma média</h3>
           <div class="box">
-            <ol>
-              <li>Somar todos os valores</li>
-              <li>Dividir pela quantidade de valores</li>
-            </ol>
+            <strong>Algoritmo:</strong> 1) Somar todos os valores → 2) Dividir pela quantidade
           </div>
-          <p>Exemplo: Para as notas [7, 8, 6, 9]</p>
-          <ol>
-            <li>Soma: 7 + 8 + 6 + 9 = 30</li>
-            <li>Quantidade: 4</li>
-            <li>Média: 30 ÷ 4 = 7.5</li>
-          </ol>
-        </section>
-      </section>
-
-      <!-- Slide 5 -->
-      <section>
-        <section>
-          <h2>Modelos de Distribuição de Espécies</h2>
-          <p>Tentam responder à pergunta:</p>
-          <div class="box center">
-            "Baseado nas condições ambientais, <br>este lugar é adequado para esta espécie viver?"
-          </div>
-        </section>
-        
-        <section>
-          <h3>O processo simplificado</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column" style="flex: 1;">
-              <img src="imagens/processo.png" alt="Diagrama do processo de modelagem" style="max-width: 90%; max-height: 220px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column" style="flex: 1;">
-              <ol>
-                <li><strong>Dados de entrada:</strong> Pontos de presença/ausência + Variáveis ambientais</li>
-                <li><strong>Aprendizado:</strong> O algoritmo identifica padrões e relações</li>
-                <li><strong>Previsão:</strong> Estimativa de adequabilidade ambiental</li>
-              </ol>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <!-- Slide 6 -->
-      <section>
-        <section>
-          <h2>Analogia: O Modelo como um Detetive Ambiental</h2>
-        </section>
-        
-        <section>
-          <h3>1. Coletando Pistas</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/cientista.png" alt="Cientista coletando dados" style="max-width: 90%; max-height: 450px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <p>O detetive visita locais onde a planta foi encontrada e anota as condições: quanto chove, qual a temperatura, tipo de solo, etc.</p>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>2. Estabelecendo Padrões</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/padrao.png" alt="Análise de padrões" style="max-width: 90%; max-height: 450px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <p>Após visitar muitos locais, o detetive percebe: "Esta planta aparece em locais onde chove entre 1000-1500mm por ano e a temperatura média é de 18-25°C."</p>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>3. Fazendo Previsões</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/previsao.png" alt="Mapa de previsão" style="max-width: 90%; max-height: 450px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <p>Agora, quando mostram ao detetive um novo local, mesmo sem visitar, ele pode dizer: "Baseado nas condições, há 80% de chance desta planta viver aqui."</p>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>4. Lidando com Incertezas</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/incerteza.png" alt="Representação de incerteza" style="max-width: 90%; max-height: 450px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <p>O detetive sabe que suas previsões têm limitações. Talvez existam outros fatores que ele não considerou, como competição com outras espécies.</p>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <!-- Slide 7 -->
-      <section>
-        <section>
-          <h2>O que é Aprendizado de Máquina?</h2>
-          <p>É uma técnica na qual, em vez de programarmos explicitamente todas as regras, <span class="highlight">deixamos que o computador "aprenda" essas regras a partir dos dados</span>.</p>
-        </section>
-        
-        <section>
-          <h3>Como o Computador "Aprende"?</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/machinelearning.png" alt="Diagrama de aprendizado de máquina" style="max-width: 90%; max-height: 450px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <ol style="font-size: 0.85em; line-height: 1.3; margin-top: 0;">
-                <li><strong>Dados de Treinamento:</strong> Exemplos rotulados (locais com/sem a espécie)</li>
-                <li><strong>Identificação de Padrões:</strong> Correlações entre variáveis ambientais e presença</li>
-                <li><strong>Aplicação:</strong> O modelo faz previsões para novos locais</li>
-              </ol>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <!-- Slide 8 -->
-      <section>
-        <section>
-          <h2>O que é uma Árvore de Decisão?</h2>
-          <p>Um modelo que funciona fazendo uma série de perguntas sobre os dados, seguindo um caminho até chegar a uma conclusão.</p>
-        </section>
-        
-        <section>
-          <h3>Exemplo: Árvore de Decisão para uma Planta</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column" style="flex: 1;">
-              <img src="imagens/tree.png" alt="Representação visual de árvore de decisão" style="max-width: 85%; max-height: 440px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column" style="flex: 1.5;">
-              <pre class="decision-tree" style="font-size: 0.55em; margin: 0; line-height: 1.2; white-space: pre-wrap;">
-Temperatura > 20°C?
-├── SIM: Precipitação > 1200mm?
-│   ├── SIM: Alta probabilidade
-│   └── NÃO: Baixa probabilidade
-└── NÃO: Altitude > 800m?
-    ├── SIM: Média probabilidade
-    └── NÃO: Baixa probabilidade
-              </pre>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <!-- Slide 9 -->
-      <section>
-        <section>
-          <h2>O que é Random Forest?</h2>
-          <p>"Random Forest" significa "Floresta Aleatória" - é um algoritmo que cria <span class="highlight">muitas árvores de decisão diferentes</span> e combina seus resultados.</p>
-        </section>
-        
-        <section>
-          <h3>Por que usar muitas árvores?</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/Árvore e Floresta_remix_01jr6f4hd4f2d86g70fzcrkwk1.png" alt="Comparação: única árvore vs. floresta" style="max-width: 90%; max-height: 440px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <p style="font-size: 0.85em; margin-bottom: 8px;">Uma única árvore de decisão tem limitações:</p>
-              <ul style="font-size: 0.8em; line-height: 1.3; margin-top: 0;">
-                <li>Pode ser muito específica para os dados de treinamento (overfitting)</li>
-                <li>Pode mudar drasticamente com pequenas alterações nos dados</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>Como funciona o Random Forest</h3>
-          <ol>
-            <li><strong>Muitas Árvores:</strong> Cria dezenas ou centenas de árvores diferentes</li>
-            <li><strong>Aleatoriedade:</strong> Cada árvore usa:
-              <ul>
-                <li>Um subconjunto aleatório dos dados</li>
-                <li>Um subconjunto aleatório das variáveis em cada divisão</li>
-              </ul>
-            </li>
-            <li><strong>Votação:</strong> Cada árvore dá sua 'opinião' sobre se um local é adequado para a espécie viver (sim/não), e a resposta final é determinada pela maioria, como em uma eleição</li>
-          </ol>
-        </section>
-      </section>
-
-      <!-- Slide 10 -->
-      <section>
-        <section>
-          <h2>Analogia: Uma Equipe de Detetives</h2>
-          <p>Random Forest é como ter uma <span class="highlight">equipe de detetives</span>, em vez de apenas um:</p>
-        </section>
-        
-        <section>
-          <h3>Como trabalha a equipe de detetives</h3>
-          <div class="columns" style="align-items: center;">
-            <div class="column">
-              <img src="imagens/equipedetetives.png" alt="Equipe de detetives trabalhando" style="max-width: 90%; max-height: 440px; display: block; margin: 0 auto;">
-            </div>
-            <div class="column">
-              <ul style="font-size: 0.8em; line-height: 1.0; margin-top: 0;">
-                <li>Cada detetive (árvore) recebe uma parte diferente das pistas</li>
-                <li>Cada um usa métodos ligeiramente diferentes para investigar</li>
-                <li>Quando precisamos decidir sobre um novo local, fazemos uma votação entre todos os detetives</li>
-                <li>O resultado final é mais confiável do que confiar em apenas um detetive</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <!-- Slide 11 -->
-      <section>
-        <section>
-          <h2>Vantagens do Random Forest</h2>
+          <p>Para as notas <strong>[7, 8, 6, 9]</strong>:</p>
           <ul>
-            <li><strong>Precisão:</strong> Geralmente oferece previsões mais precisas</li>
-            <li><strong>Robustez:</strong> Menos suscetível a ruídos nos dados</li>
-            <li><strong>Transparência:</strong> Fornece informações sobre quais variáveis são mais importantes</li>
-            <li><strong>Versatilidade:</strong> Funciona bem com diferentes tipos de dados</li>
+            <li>Soma: 7 + 8 + 6 + 9 = <strong>30</strong></li>
+            <li>Média: 30 / 4 = <strong>7,5</strong></li>
+          </ul>
+          <p class="small">Algoritmos de computador seguem a mesma lógica, só que com muito mais dados!</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: POR QUE MODELAR + MUDANÇA CLIMÁTICA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Por que modelar onde as espécies vivem?</h2>
+          <p>Cada espécie precisa de <span class="highlight">condições ambientais</span> específicas: temperatura, chuva, solo...</p>
+          <div class="box-warning">
+            <strong>O problema:</strong> com a mudança climática, essas condições estão mudando. Onde a espécie vive hoje pode não ser adequado no futuro!
+          </div>
+        </section>
+
+        <section>
+          <h3>O que queremos descobrir?</h3>
+          <div class="box center">
+            "Este lugar tem as condições certas para esta espécie viver?"
+          </div>
+          <p>E a pergunta mais importante:</p>
+          <div class="box-warning center">
+            "E no futuro, com o clima diferente, ela ainda vai conseguir viver ali?"
+          </div>
+        </section>
+
+        <section>
+          <h3>E na prática do engenheiro florestal?</h3>
+          <p>Essas previsões ajudam vocês a tomar decisões reais:</p>
+          <ul>
+            <li><strong>Restauração florestal:</strong> quais espécies plantar hoje que ainda vão sobreviver daqui a 30 anos?</li>
+            <li><strong>Plantios comerciais:</strong> onde plantar <em>Pinus</em> ou <em>Eucalyptus</em> considerando o clima futuro?</li>
+            <li><strong>Conservação:</strong> quais áreas proteger para salvar espécies ameaçadas?</li>
+            <li><strong>Manejo florestal:</strong> como adaptar planos de manejo se as espécies mudam de lugar?</li>
           </ul>
         </section>
       </section>
 
-      <!-- Slide 12 -->
+      <!-- ============================================ -->
+      <!-- SLIDE 6: DE ONDE VÊM OS DADOS -->
+      <!-- ============================================ -->
       <section>
         <section>
-          <h2>Parâmetros do Random Forest</h2>
-          <p>Os parâmetros são como "botões de ajuste" que controlam como o algoritmo funciona.</p>
+          <h2>De onde vêm os dados?</h2>
+          <p>Para criar nosso modelo, precisamos de dois tipos de informação:</p>
         </section>
-        
+
         <section>
-          <h3>n_estimators: Número de Árvores</h3>
+          <h3><span class="step-number">1</span> Onde a espécie foi encontrada</h3>
+          <div class="box">
+            <p><strong>GBIF</strong> - banco de dados mundial de biodiversidade</p>
+            <ul>
+              <li>Reúne registros de museus, herbários e pesquisas</li>
+              <li>Cada registro tem <strong>coordenadas</strong> (latitude e longitude)</li>
+            </ul>
+          </div>
+          <p class="small">Um mapa gigante com todos os locais onde alguém já encontrou cada espécie.</p>
+        </section>
+
+        <section>
+          <h3><span class="step-number">2</span> Condições ambientais de cada lugar</h3>
+          <div class="box">
+            <p><strong>WorldClim</strong> - 19 variáveis climáticas globais</p>
+            <ul>
+              <li>Temperatura média do ano, do mês mais frio, do mais quente...</li>
+              <li>Chuva total do ano, do mês mais seco, do mais chuvoso...</li>
+            </ul>
+          </div>
+          <p class="small">Com esses dados, sabemos as condições de temperatura e chuva em cada ponto do Brasil.</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: ANALOGIA DO DETETIVE -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Analogia: o Detetive Ambiental</h2>
+          <p>Vamos pensar no modelo como um <span class="highlight">detetive investigando onde uma planta gosta de viver</span>.</p>
+        </section>
+
+        <section>
+          <h3><span class="step-number">1</span> Coletando pistas</h3>
           <div class="columns">
             <div class="column">
-              <img src="imagens/Comparativo de Árvores_simple_compose.png" alt="Poucas árvores vs muitas árvores">
+              <img src="imagens/cientista.jpg" alt="Cientista coletando dados" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+              <p>O detetive visita locais onde a planta foi encontrada e anota:</p>
+              <ul>
+                <li>Quanto chove?</li>
+                <li>Qual a temperatura?</li>
+                <li>Qual a altitude?</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3><span class="step-number">2</span> Descobrindo padrões</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/padrao.jpg" alt="Análise de padrões" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+              <p>Depois de visitar muitos locais, o detetive percebe:</p>
+              <div class="box">
+                "Essa planta aparece onde chove entre 1000 e 1500 mm por ano e a temperatura fica entre 18 e 25 graus."
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3><span class="step-number">3</span> Fazendo previsões</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/previsao.jpg" alt="Mapa de previsão" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+              <p>Agora, mesmo sem visitar um lugar novo, o detetive consegue dizer:</p>
+              <div class="box">
+                "Olhando as condições deste lugar, há 80% de chance desta planta viver aqui."
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3><span class="step-number">4</span> Reconhecendo limitações</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/incerteza.jpg" alt="Representação de incerteza" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+              <p>O detetive sabe que não é perfeito. Ele pode não ter considerado competição entre plantas, tipo de solo, dispersores...</p>
+              <p class="small">"Todos os modelos estão errados, mas alguns são úteis."</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: APRENDIZADO DE MÁQUINA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Aprendizado de Máquina</h2>
+          <p>Em vez de nós dizermos as regras ao computador, <span class="highlight">ele descobre as regras sozinho</span> olhando os dados.</p>
+          <div class="box">
+            <strong>Exemplo:</strong> nós não dizemos "a planta gosta de chuva entre 1000-1500 mm". O computador descobre isso sozinho ao analisar centenas de pontos.
+          </div>
+        </section>
+
+        <section>
+          <h3>Como funciona?</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/machinelearning.jpg" alt="Aprendizado de máquina" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+              <ol>
+                <li><strong>Mostramos exemplos:</strong><br>locais com e sem a espécie</li>
+                <li><strong>O computador encontra padrões:</strong><br>"nos locais com a espécie, a temperatura era entre X e Y"</li>
+                <li><strong>Fazemos previsões:</strong><br>para lugares novos que ele nunca viu</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: ÁRVORE DE DECISÃO -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Árvore de Decisão</h2>
+          <p>Funciona como um <span class="highlight">jogo de perguntas de sim ou não</span>.</p>
+          <p>Cada pergunta divide os dados em dois grupos, até chegar a uma resposta.</p>
+        </section>
+
+        <section>
+          <h3>Exemplo: a planta vive aqui?</h3>
+          <div class="columns">
+            <div class="column" style="flex: 1;">
+              <img src="imagens/tree.jpg" alt="Árvore de decisão" style="max-width: 85%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column" style="flex: 1.5;">
+              <pre class="decision-tree" style="font-size: 0.6em; margin: 0; line-height: 1.3;">
+Temperatura > 20 graus?
+├── SIM: Chove > 1200 mm?
+│   ├── SIM: Provavelmente VIVE aqui
+│   └── NÃO: Provavelmente NÃO vive
+└── NÃO: Altitude > 800 m?
+    ├── SIM: Talvez viva aqui
+    └── NÃO: Provavelmente NÃO vive
+              </pre>
+              <p class="small" style="margin-top: 15px;">Cada "pergunta" usa uma variável ambiental para dividir os dados. É como um fluxograma!</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: RANDOM FOREST -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Random Forest</h2>
+          <p>"Floresta Aleatória" - é um algoritmo que cria <span class="highlight">muitas árvores de decisão</span> e combina os resultados de todas elas.</p>
+        </section>
+
+        <section>
+          <h3>Por que não usar só uma árvore?</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/arvore_floresta.jpg" alt="Uma árvore vs. floresta" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+              <p>Uma árvore sozinha pode:</p>
+              <ul>
+                <li><strong>"Decorar"</strong> os dados em vez de aprender padrões reais</li>
+                <li>Dar respostas muito diferentes se mudarmos poucos dados</li>
+              </ul>
+              <p>Uma <strong>floresta</strong> de árvores diferentes dá respostas mais confiáveis!</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Como funciona</h3>
+          <ol>
+            <li><strong>Cria muitas árvores</strong> (100+), cada uma um pouco diferente</li>
+            <li><strong>Cada árvore</strong> recebe dados e variáveis diferentes</li>
+            <li><strong>Cada árvore vota:</strong> "a espécie vive aqui? Sim ou não?"</li>
+            <li><strong>Resultado final:</strong> maioria dos votos vence, como numa eleição!</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: ANALOGIA DA EQUIPE -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Analogia: equipe de detetives</h2>
+          <p>Random Forest é como ter uma <span class="highlight">equipe de detetives</span> em vez de só um:</p>
+        </section>
+
+        <section>
+          <h3>O trabalho da equipe</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/equipedetetives.jpg" alt="Equipe de detetives" style="max-width: 90%; max-height: 320px; display: block; margin: 0 auto;">
             </div>
             <div class="column">
               <ul>
-                <li>"Quantos detetives queremos na nossa equipe?"</li>
-                <li>Mais árvores = resultado mais estável</li>
-                <li>Mais árvores = mais tempo de processamento</li>
-                <li>Valor típico: 100-500 árvores</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>max_depth: Profundidade Máxima</h3>
-          <div class="columns">
-            <div class="column">
-              <img src="imagens/max_depth.png" alt="Árvore rasa vs árvore profunda">
-            </div>
-            <div class="column">
-              <ul style="font-size: 0.9em; line-height: 1.2; margin-top: 0;">
-                <li>"Quão detalhado permitimos que cada detetive seja?"</li>
-                <li>Árvores profundas: capturam relações complexas</li>
-                <li>Árvores muito profundas: risco de "decorar" os dados</li>
-                <li>Limitar profundidade ajuda a generalizar</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>test_size: Tamanho do Conjunto de Teste</h3>
-          <div class="columns">
-            <div class="column">
-              <img src="imagens/treino_teste.png" alt="Divisão treino-teste">
-            </div>
-            <div class="column">
-              <ul>
-                <li style="font-size: 0.9em; line-height: 1.2; margin-bottom: 4px;">"Vamos guardar amostras para verificar se nossos detetives estão acertando"</li>
-                <li style="font-size: 0.9em; line-height: 1.2; margin-bottom: 4px;">Separamos 20-30% dos dados para testar o modelo</li>
-                <li style="font-size: 0.9em; line-height: 1.2; margin-bottom: 4px;">Importante para avaliar o desempenho real</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        
-        <section>
-          <h3>max_features: Máximo de Características</h3>
-          <div class="columns">
-            <div class="column">
-              <img src="imagens/features.png" alt="Seleção de características">
-            </div>
-            <div class="column">
-              <ul style="font-size: 0.8em; line-height: 1; margin-top: 0;">
-                <li>"Quantos fatores ambientais cada detetive considera de cada vez?"</li>
-                <li>Limitar o número de variáveis aumenta a diversidade entre as árvores</li>
-                <li>Opções comuns:
-                  <ul>
-                    <li>'sqrt': raiz quadrada do número de variáveis</li>
-                    <li>'log2': log base 2 do número de variáveis</li>
-                  </ul>
-                </li>
+                <li>Cada detetive recebe <strong>pistas diferentes</strong></li>
+                <li>Cada um investiga do <strong>seu jeito</strong></li>
+                <li>Para decidir, fazemos uma <strong>votação</strong></li>
+                <li>A resposta do grupo é mais <strong>confiável</strong> do que a de um só</li>
               </ul>
             </div>
           </div>
         </section>
       </section>
 
-      <!-- Slide 13 -->
+      <!-- ============================================ -->
+      <!-- SLIDE 12: VANTAGENS -->
+      <!-- ============================================ -->
       <section>
-        <h2>Configurando um Modelo no TAIPA</h2>
-          <p>Agora vamos aplicar estes conceitos na prática, utilizando a plataforma TAIPA.</p>
-      </section>
-
-      <!-- Slide 14 -->
-      <section>
-        <h2>Resumo</h2>
-        <ul style="font-size: 1em; line-height: 1.25; margin-top: 0;">
-          <li>Modelos são representações simplificadas da realidade</li>
-          <li>Algoritmos são sequências de passos para resolver problemas</li>
-          <li>Random Forest combina árvores de decisão para previsões robustas</li>
-          <li>Parâmetros controlam comportamento e precisam ser ajustados</li>
-          <li>Modelagem de distribuição de espécies ajuda a prever impactos climáticos</li>
-        </ul>
-      </section>
-
-      <!-- Slide 15 -->
-      <section>
-        <h2>Próximos Passos</h2>
+        <h2>Por que o Random Forest é bom?</h2>
         <ul>
-          <li>Execução de modelos no TAIPA</li>
-          <li>Interpretação de resultados</li>
-          <li>Projeções em cenários de mudanças climáticas</li>
-          <li>Aplicações práticas na engenharia florestal</li>
+          <li><strong>Acerta bastante:</strong> votação entre árvores dá resultados mais precisos</li>
+          <li><strong>Resiste a erros:</strong> a maioria das árvores compensa dados ruins</li>
+          <li><strong>Mostra o que importa:</strong> quais variáveis foram mais relevantes</li>
+          <li><strong>Versátil:</strong> funciona com diferentes tipos de dados</li>
         </ul>
-        <div class="box center">
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 13: PARÂMETROS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Ajustes do Random Forest</h2>
+          <p>O algoritmo tem alguns <span class="highlight">"botões de ajuste"</span> que podemos configurar.</p>
+          <p>Vamos ver os três mais importantes:</p>
+        </section>
+
+        <section>
+          <h3>Número de árvores</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/comparativo_arvores.jpg" alt="Poucas vs muitas árvores">
+            </div>
+            <div class="column">
+              <p><strong>"Quantos detetives na equipe?"</strong></p>
+              <ul>
+                <li>Mais árvores = resultado mais estável</li>
+                <li>Mais árvores = demora mais para calcular</li>
+                <li>Valor comum: <strong>100 a 500</strong></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Profundidade das árvores</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/max_depth.jpg" alt="Árvore rasa vs profunda">
+            </div>
+            <div class="column">
+              <p><strong>"Quantas perguntas cada detetive pode fazer?"</strong></p>
+              <ul>
+                <li>Mais perguntas = mais detalhes</li>
+                <li>Perguntas demais = risco de "decorar" em vez de aprender</li>
+                <li>É preciso encontrar o equilíbrio!</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Dados de treino vs. dados de teste</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="imagens/treino_teste.jpg" alt="Divisão treino-teste">
+            </div>
+            <div class="column">
+              <p><strong>"Guardar uma prova para ver se o modelo acerta"</strong></p>
+              <ul>
+                <li>Usamos <strong>70-80%</strong> dos dados para ensinar o modelo</li>
+                <li>Guardamos <strong>20-30%</strong> para testar se ele realmente aprendeu</li>
+                <li>Isso evita que o modelo "cole na prova"!</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE: APLICAÇÕES PROFISSIONAIS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>E no trabalho do engenheiro florestal?</h2>
+          <p>Modelagem de distribuição é uma <span class="highlight">ferramenta profissional real</span>, usada em:</p>
+        </section>
+
+        <section>
+          <h3>Restauração ecológica</h3>
+          <div class="box">
+            <strong>Problema:</strong> você precisa restaurar uma área degradada. Quais espécies nativas escolher?
+          </div>
+          <ul>
+            <li>O modelo indica quais espécies têm <strong>aptidão climática</strong> para aquele local</li>
+            <li>Com a projeção futura, evita plantar espécies que vão perder habitat em 30 anos</li>
+          </ul>
+          <p class="small">Ex: se a <em>Araucaria angustifolia</em> vai perder área com o aquecimento, vale considerar espécies complementares.</p>
+        </section>
+
+        <section>
+          <h3>Silvicultura e plantios</h3>
+          <div class="box">
+            <strong>Problema:</strong> onde plantar para ter melhor produtividade no futuro?
+          </div>
+          <ul>
+            <li>Modelos ajudam a prever <strong>aptidão de espécies comerciais</strong> em cenários futuros</li>
+            <li>Regiões que hoje são ótimas para <em>Eucalyptus</em> podem não ser em 2050</li>
+            <li>Migração de zonas aptas pode abrir <strong>novas oportunidades</strong></li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Licenciamento e consultoria ambiental</h3>
+          <div class="box">
+            <strong>Problema:</strong> um empreendimento vai impactar a vegetação. Qual o risco para espécies ameaçadas?
+          </div>
+          <ul>
+            <li>Estudos de impacto ambiental (EIA) usam SDM para avaliar riscos</li>
+            <li>Mapas de distribuição potencial embasam <strong>planos de compensação</strong></li>
+            <li>Órgãos ambientais cada vez mais exigem esse tipo de análise</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Unidades de conservação</h3>
+          <div class="box">
+            <strong>Problema:</strong> onde criar novas áreas protegidas para maior impacto?
+          </div>
+          <ul>
+            <li>Modelos identificam <strong>áreas de refúgio climático</strong> para espécies ameaçadas</li>
+            <li>Ajudam a planejar <strong>corredores ecológicos</strong> entre fragmentos</li>
+            <li>Priorizam regiões onde a proteção terá mais resultado a longo prazo</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE: TAIPA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Hora da prática: TAIPA</h2>
+          <p>Agora vamos aplicar tudo isso na plataforma <span class="highlight">TAIPA</span>!</p>
+        </section>
+
+        <section>
+          <h3>O que vamos fazer no TAIPA</h3>
+          <ol style="list-style: none; padding: 0; margin: 0;">
+            <li><span class="step-number">1</span> <strong>Buscar espécie</strong> - baixar pontos de ocorrência</li>
+            <li><span class="step-number">2</span> <strong>Pseudo-ausências</strong> - pontos onde a espécie NÃO está</li>
+            <li><span class="step-number">3</span> <strong>Variáveis climáticas</strong> - selecionar as mais relevantes</li>
+            <li><span class="step-number">4</span> <strong>Treinar modelo</strong> - ensinar o Random Forest</li>
+            <li><span class="step-number">5</span> <strong>Mapa atual</strong> - onde a espécie pode viver hoje</li>
+            <li><span class="step-number">6</span> <strong>Projeção futura</strong> - e com a mudança climática?</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 15: RESUMO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>O que aprendemos hoje</h2>
+        <ul>
+          <li><strong>Modelo</strong> = versão simplificada da realidade</li>
+          <li><strong>Algoritmo</strong> = passo a passo para resolver um problema</li>
+          <li><strong>Aprendizado de máquina</strong> = o computador descobre padrões nos dados</li>
+          <li><strong>Random Forest</strong> = muitas árvores de decisão votando juntas</li>
+          <li><strong>Modelagem de distribuição</strong> = prever onde uma espécie pode viver, hoje e no futuro</li>
+        </ul>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 16: PRÓXIMOS PASSOS -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Próximos passos</h2>
+        <ul>
+          <li>Executar modelos no TAIPA</li>
+          <li>Interpretar os mapas de distribuição</li>
+          <li>Comparar cenários de mudança climática</li>
+          <li>Discutir: o que fazer com esses resultados na prática?</li>
+        </ul>
+        <br>
+        <div class="box center" style="font-size: 1.2em;">
           Dúvidas?
         </div>
       </section>
+
     </div>
   </div>
 
@@ -541,7 +713,7 @@ Temperatura > 20°C?
       center: false,
       hash: true,
       transition: 'slide',
-      // Learn about plugins: https://revealjs.com/plugins/
+      slideNumber: true,
       plugins: [ ]
     });
   </script>
