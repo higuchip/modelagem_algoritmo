@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dados de Ocorrência - GBIF</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+  <style>
+    :root {
+      --main-color: #2c7a3f;
+      --accent-color: #1a5c2e;
+      --text-color: #333;
+      --background-color: #fff;
+      --box-bg-color: rgba(44, 122, 63, 0.08);
+      --warning-color: #d35400;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      text-transform: none;
+      color: var(--main-color);
+      margin-bottom: 0.5em;
+      font-weight: 600;
+    }
+
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.4em; margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.1em; margin-bottom: 0.3em; }
+
+    .reveal p, .reveal li {
+      font-size: 0.78em;
+      line-height: 1.4;
+    }
+
+    .reveal .small { font-size: 0.6em; }
+    .reveal .center { text-align: center; }
+
+    .reveal .highlight {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .reveal .box {
+      border: 1px solid var(--main-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: var(--box-bg-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .reveal .box-warning {
+      border: 1px solid var(--warning-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(211, 84, 0, 0.08);
+    }
+
+    .reveal .box-blue {
+      border: 1px solid #2980b9;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(41, 128, 185, 0.08);
+    }
+
+    .reveal .columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .reveal .column {
+      flex: 1;
+    }
+
+    .reveal img {
+      border: none !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+      background: none !important;
+      border-radius: 8px;
+    }
+
+    .reveal .cite {
+      font-size: 0.6em;
+      font-style: italic;
+      text-align: right;
+      margin-top: 20px;
+      color: #777;
+    }
+
+    .reveal ol, .reveal ul {
+      margin-left: 0.8em;
+    }
+
+    .reveal li {
+      margin-bottom: 0.25em;
+    }
+
+    .reveal .slides section {
+      padding: 10px 40px;
+    }
+
+    .reveal .emoji {
+      font-size: 1.2em;
+      margin-right: 5px;
+    }
+
+    .reveal .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: var(--main-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 0.8em;
+      margin-right: 8px;
+    }
+
+    .reveal .controls {
+      opacity: 0.6;
+    }
+
+    .reveal .progress {
+      height: 5px;
+      color: var(--main-color);
+    }
+
+    .reveal table {
+      font-size: 0.7em;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .reveal table th {
+      background-color: var(--main-color);
+      color: white;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .reveal table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .reveal table tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+
+    .reveal .code-example {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.4;
+      font-size: 0.65em;
+      background-color: #f0f7f0;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #cde6cd;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: CAPA -->
+      <!-- ============================================ -->
+      <section>
+        <h1>Dados de Ocorrencia de Especies</h1>
+        <h3>De onde vem os dados que alimentam<br>nossos modelos?</h3>
+        <br>
+        <p class="small">Aula 2 - Disciplina: Mudancas Climaticas</p>
+        <p class="small">Engenharia Florestal - UDESC</p>
+        <p class="small">Prof. Pedro Higuchi</p>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: RECAPITULAÇÃO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Recapitulando a aula anterior</h2>
+        <ul>
+          <li><strong>Modelo</strong> = versao simplificada da realidade</li>
+          <li><strong>Algoritmo</strong> = passo a passo para resolver um problema</li>
+          <li><strong>Random Forest</strong> = muitas arvores de decisao votando juntas</li>
+        </ul>
+        <div class="box" style="margin-top: 15px;">
+          <strong>Hoje:</strong> vamos entender de onde vem os <span class="highlight">dados de ocorrencia</span> que alimentam o modelo - a primeira etapa no TAIPA.
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: ROTEIRO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Roteiro da aula</h2>
+        <ol>
+          <li>O que sao <strong>dados de ocorrencia</strong>?</li>
+          <li>O <strong>GBIF</strong> - banco de dados global de biodiversidade</li>
+          <li>De onde vem esses registros?</li>
+          <li>Qualidade dos dados e <strong>vies amostral</strong></li>
+          <li>Pratica no <strong>TAIPA</strong>: busca de especies</li>
+        </ol>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: O QUE SÃO DADOS DE OCORRÊNCIA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>O que sao dados de ocorrencia?</h2>
+          <p>Um dado de ocorrencia e um <span class="highlight">registro de que uma especie foi encontrada em determinado lugar</span>.</p>
+          <div class="box">
+            <strong>Exemplo:</strong> "No dia 15/03/2020, a especie <em>Araucaria angustifolia</em> foi observada nas coordenadas -27.59, -50.35 (Lages, SC)."
+          </div>
+        </section>
+
+        <section>
+          <h3>As informacoes essenciais</h3>
+          <p>Cada registro de ocorrencia tem pelo menos:</p>
+          <table>
+            <tr>
+              <th>Informacao</th>
+              <th>Exemplo</th>
+              <th>Para que serve?</th>
+            </tr>
+            <tr>
+              <td><strong>Especie</strong></td>
+              <td><em>Araucaria angustifolia</em></td>
+              <td>Saber de quem estamos falando</td>
+            </tr>
+            <tr>
+              <td><strong>Latitude</strong></td>
+              <td>-27.59</td>
+              <td>Posicao norte-sul</td>
+            </tr>
+            <tr>
+              <td><strong>Longitude</strong></td>
+              <td>-50.35</td>
+              <td>Posicao leste-oeste</td>
+            </tr>
+            <tr>
+              <td><strong>Data</strong></td>
+              <td>2020-03-15</td>
+              <td>Quando foi observada</td>
+            </tr>
+          </table>
+          <p class="small">Com latitude e longitude, podemos colocar cada registro no mapa e cruzar com dados climaticos.</p>
+        </section>
+
+        <section>
+          <h3>De registro para modelo</h3>
+          <p>O ponto-chave e:</p>
+          <div class="box">
+            Se sabemos <strong>onde</strong> a especie esta, podemos descobrir <strong>em quais condicoes climaticas</strong> ela vive.
+          </div>
+          <p>E assim o modelo aprende:</p>
+          <ul>
+            <li>Ponto com a especie + clima daquele local = <strong>"presenca"</strong></li>
+            <li>Ponto sem a especie + clima daquele local = <strong>"ausencia"</strong></li>
+          </ul>
+          <p class="small">Na proxima aula vamos falar sobre como gerar pontos de ausencia (pseudo-ausencias).</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: O QUE É O GBIF -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>GBIF: o banco de dados global</h2>
+          <p><strong>Global Biodiversity Information Facility</strong></p>
+          <div class="box">
+            O GBIF e a <span class="highlight">maior rede mundial de dados de biodiversidade</span>. Reune informacoes de milhares de instituicoes em mais de 60 paises.
+          </div>
+          <ul>
+            <li>Mais de <strong>2 bilhoes</strong> de registros de ocorrencia</li>
+            <li>Dados <strong>abertos e gratuitos</strong></li>
+            <li>Acesso via site (gbif.org) ou via <strong>API</strong> (como o TAIPA faz)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>De onde vem os dados do GBIF?</h3>
+          <p>O GBIF nao coleta dados. Ele <span class="highlight">agrega dados</span> de varias fontes:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Herbarios e museus</strong>
+                <ul>
+                  <li>Colecoes cientificas centenarias</li>
+                  <li>Plantas prensadas, animais preservados</li>
+                  <li>Cada exemplar tem uma etiqueta com local e data</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Pesquisas de campo</strong>
+                <ul>
+                  <li>Inventarios florestais</li>
+                  <li>Levantamentos de fauna e flora</li>
+                  <li>Parcelas permanentes</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Mais fontes de dados</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Ciencia cidada</strong>
+                <ul>
+                  <li>iNaturalist - fotos de qualquer pessoa</li>
+                  <li>eBird - observacoes de aves</li>
+                  <li>Milhoes de registros por ano!</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Dados governamentais</strong>
+                <ul>
+                  <li>Monitoramento de biodiversidade</li>
+                  <li>Estudos de impacto ambiental</li>
+                  <li>Programas de conservacao</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="small" style="margin-top: 10px;">No Brasil, herbarios como o FURB, FLOR, SP e MBM contribuem com milhoes de registros.</p>
+        </section>
+
+        <section>
+          <h3>Conexao com o TAIPA</h3>
+          <div class="box-blue">
+            <strong>No TAIPA</strong>, quando voce digita o nome de uma especie e clica "Buscar", o sistema consulta o GBIF automaticamente via API e retorna os pontos de ocorrencia no Brasil.
+          </div>
+          <p>Voce nao precisa acessar o site do GBIF manualmente - o TAIPA faz isso por voce!</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: COMO FUNCIONA A BUSCA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Como funciona a busca no GBIF?</h2>
+          <p>Quando buscamos uma especie, o GBIF retorna uma <span class="highlight">tabela com todos os registros</span> encontrados.</p>
+        </section>
+
+        <section>
+          <h3>O que o GBIF retorna</h3>
+          <p>Exemplo de busca por <em>Araucaria angustifolia</em> no Brasil:</p>
+          <table>
+            <tr>
+              <th>Especie</th>
+              <th>Latitude</th>
+              <th>Longitude</th>
+              <th>Ano</th>
+              <th>Fonte</th>
+            </tr>
+            <tr>
+              <td><em>A. angustifolia</em></td>
+              <td>-27.59</td>
+              <td>-50.35</td>
+              <td>2018</td>
+              <td>Herbario FURB</td>
+            </tr>
+            <tr>
+              <td><em>A. angustifolia</em></td>
+              <td>-28.12</td>
+              <td>-49.37</td>
+              <td>2020</td>
+              <td>iNaturalist</td>
+            </tr>
+            <tr>
+              <td><em>A. angustifolia</em></td>
+              <td>-25.43</td>
+              <td>-49.27</td>
+              <td>2015</td>
+              <td>Herbario MBM</td>
+            </tr>
+            <tr>
+              <td><em>A. angustifolia</em></td>
+              <td>-29.17</td>
+              <td>-50.31</td>
+              <td>2019</td>
+              <td>Inventario SC</td>
+            </tr>
+          </table>
+          <p class="small">Cada linha = um local onde a especie foi confirmada. Sao essas coordenadas que vao para o mapa!</p>
+        </section>
+
+        <section>
+          <h3>Dos pontos ao mapa</h3>
+          <p>Com as coordenadas, criamos um <span class="highlight">mapa de ocorrencias</span>:</p>
+          <div class="box">
+            <ul>
+              <li>Cada ponto no mapa = um registro real da especie</li>
+              <li>O mapa mostra a <strong>distribuicao conhecida</strong> da especie</li>
+              <li>E o ponto de partida para o modelo</li>
+            </ul>
+          </div>
+          <p class="small">No TAIPA, esse mapa e interativo - voce pode dar zoom e clicar nos pontos para ver detalhes.</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: QUALIDADE DOS DADOS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Nem todo dado e bom!</h2>
+          <p>Dados de ocorrencia podem ter <span class="highlight">problemas</span> que afetam o modelo.</p>
+          <p>E fundamental saber identificar e lidar com esses problemas.</p>
+        </section>
+
+        <section>
+          <h3>Problemas comuns</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Coordenadas erradas</strong>
+                <ul>
+                  <li>Ponto no meio do oceano</li>
+                  <li>Latitude e longitude trocadas</li>
+                  <li>Coordenadas da sede do municipio e nao do local real</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Identificacao errada</strong>
+                <ul>
+                  <li>Especie confundida com outra</li>
+                  <li>Nome cientifico desatualizado</li>
+                  <li>Fotos sem confirmacao por especialista</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Mais problemas</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Dados duplicados</strong>
+                <ul>
+                  <li>Mesmo registro em varias colecoes</li>
+                  <li>Varias fotos do mesmo individuo</li>
+                  <li>Inflam artificialmente a amostra</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Dados antigos</strong>
+                <ul>
+                  <li>Registros de 100+ anos atras</li>
+                  <li>A especie pode nao estar mais la</li>
+                  <li>Uso da terra mudou completamente</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="small" style="margin-top: 10px;">No TAIPA, voce pode visualizar os pontos no mapa e identificar registros suspeitos antes de prosseguir.</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: VIÉS AMOSTRAL -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Vies amostral</h2>
+          <p>O maior desafio dos dados de ocorrencia: <span class="highlight">os registros nao sao distribuidos uniformemente</span>.</p>
+        </section>
+
+        <section>
+          <h3>Por que existe vies?</h3>
+          <p>Pesquisadores coletam mais em certos lugares:</p>
+          <ul>
+            <li><strong>Perto de universidades e cidades</strong> - acesso mais facil</li>
+            <li><strong>Perto de estradas</strong> - logistica de campo</li>
+            <li><strong>Unidades de conservacao</strong> - muitas pesquisas concentradas</li>
+            <li><strong>Regioes com financiamento</strong> - projetos em areas prioritarias</li>
+          </ul>
+          <div class="box-warning" style="margin-top: 10px;">
+            <strong>Resultado:</strong> areas remotas ficam sub-amostradas. Pode parecer que a especie "nao existe la", quando na verdade <strong>ninguem foi la procurar</strong>.
+          </div>
+        </section>
+
+        <section>
+          <h3>Exemplo pratico: Araucaria</h3>
+          <p>Imagine a busca por <em>Araucaria angustifolia</em>:</p>
+          <ul>
+            <li>Muitos registros em <strong>Lages, Curitiba, Campos do Jordao</strong> (regioes com universidades)</li>
+            <li>Poucos registros no <strong>oeste do Parana</strong> (area de agricultura)</li>
+            <li>Quase nenhum no <strong>Misiones (Argentina)</strong> (outro pais, menos dados no GBIF Brasil)</li>
+          </ul>
+          <div class="box">
+            <strong>Pergunta para refletir:</strong> se o modelo so "ve" registros perto de universidades, o que ele pode aprender de errado?
+          </div>
+        </section>
+
+        <section>
+          <h3>Como lidar com o vies?</h3>
+          <ul>
+            <li><strong>Revisar o mapa:</strong> os pontos fazem sentido biologicamente?</li>
+            <li><strong>Remover pontos suspeitos:</strong> coordenadas claramente erradas</li>
+            <li><strong>Rarefacao espacial:</strong> limitar pontos por area para evitar aglomeracoes</li>
+            <li><strong>Conhecer a especie:</strong> se voce sabe que ela existe em um lugar sem registros, considere isso na interpretacao</li>
+          </ul>
+          <div class="box" style="margin-top: 8px;">
+            <strong>No TAIPA:</strong> o mapa interativo permite visualizar os pontos e identificar aglomeracoes ou pontos fora do esperado.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: QUANTIDADE DE DADOS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Quantos pontos sao necessarios?</h2>
+          <p>Essa e uma pergunta importante. A resposta curta: <span class="highlight">depende, mas quanto mais (com qualidade), melhor</span>.</p>
+        </section>
+
+        <section>
+          <h3>Regras praticas</h3>
+          <table>
+            <tr>
+              <th>Quantidade</th>
+              <th>Situacao</th>
+              <th>Recomendacao</th>
+            </tr>
+            <tr>
+              <td><strong>< 20</strong></td>
+              <td>Muito pouco</td>
+              <td>Modelo sera fragil e pouco confiavel</td>
+            </tr>
+            <tr>
+              <td><strong>20 - 50</strong></td>
+              <td>Minimo</td>
+              <td>Funciona, mas com muita incerteza</td>
+            </tr>
+            <tr>
+              <td><strong>50 - 200</strong></td>
+              <td>Bom</td>
+              <td>Resultados razoaveis para a maioria das especies</td>
+            </tr>
+            <tr>
+              <td><strong>> 200</strong></td>
+              <td>Ideal</td>
+              <td>Modelos mais robustos e confiaveis</td>
+            </tr>
+          </table>
+          <p class="small">No TAIPA, o limite maximo de busca e de 500 registros. Isso e suficiente para a maioria das analises didaticas.</p>
+        </section>
+
+        <section>
+          <h3>Qualidade vs. quantidade</h3>
+          <div class="box">
+            <strong>100 pontos bem distribuidos</strong> valem mais que <strong>500 pontos concentrados</strong> em uma unica regiao.
+          </div>
+          <p>O que importa:</p>
+          <ul>
+            <li><strong>Cobertura geografica:</strong> pontos espalhados por toda a area de ocorrencia</li>
+            <li><strong>Cobertura ambiental:</strong> capturar a variedade de climas onde a especie vive</li>
+            <li><strong>Confiabilidade:</strong> registros verificados e com coordenadas precisas</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: NOME CIENTÍFICO -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>A importancia do nome cientifico</h2>
+          <p>Para buscar no GBIF, usamos o <span class="highlight">nome cientifico</span> (binomial latino).</p>
+        </section>
+
+        <section>
+          <h3>Por que nao usar o nome popular?</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Nome popular</strong>
+                <ul>
+                  <li>"Pinheiro" pode ser <em>Araucaria</em>, <em>Pinus</em>, ou outros</li>
+                  <li>"Canela" pode ser dezenas de especies diferentes</li>
+                  <li>Muda de uma regiao para outra</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Nome cientifico</strong>
+                <ul>
+                  <li><em>Araucaria angustifolia</em> e unico no mundo</li>
+                  <li>Reconhecido internacionalmente</li>
+                  <li>Permite busca precisa no GBIF</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Dica: sinonimos taxonomicos</h3>
+          <p>Especies podem ter <strong>nomes antigos</strong> (sinonimos):</p>
+          <div class="box">
+            <p><em>Araucaria angustifolia</em> ja foi chamada de <em>Araucaria brasiliana</em></p>
+            <p>O GBIF geralmente reconhece sinonimos, mas nem sempre!</p>
+          </div>
+          <p>Na duvida, consulte:</p>
+          <ul>
+            <li><strong>Flora e Funga do Brasil</strong> (floradobrasil.jbrj.gov.br) - para plantas</li>
+            <li><strong>The Plant List / POWO</strong> - referencia internacional</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: PRÁTICA NO TAIPA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Pratica no TAIPA</h2>
+          <p>Agora vamos aplicar o que aprendemos!</p>
+          <div class="box center">
+            <strong>Etapa 1 do TAIPA:</strong> Busca de Especies
+          </div>
+        </section>
+
+        <section>
+          <h3>Passo a passo</h3>
+          <ol style="list-style: none; padding: 0; margin: 0;">
+            <li style="margin-bottom: 10px;"><span class="step-number">1</span> <strong>Acessar o TAIPA</strong> no navegador</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">2</span> <strong>Clicar em "Comecar"</strong> na tela inicial</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">3</span> <strong>Digitar o nome cientifico</strong> da especie escolhida</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">4</span> <strong>Definir o limite</strong> de registros (sugestao: 100-300)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">5</span> <strong>Clicar em "Buscar"</strong> e aguardar</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">6</span> <strong>Analisar o mapa</strong> - os pontos fazem sentido?</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>O que observar no mapa</h3>
+          <ul>
+            <li>Os pontos estao no <strong>Brasil</strong>? (sem pontos no oceano?)</li>
+            <li>A distribuicao <strong>faz sentido</strong> para a especie?</li>
+            <li>Ha <strong>aglomeracoes suspeitas</strong>? (muitos pontos no mesmo local)</li>
+            <li>Ha <strong>pontos isolados</strong> muito longe dos demais?</li>
+          </ul>
+          <div class="box" style="margin-top: 8px;">
+            <strong>Exercicio:</strong> experimente trocar entre visualizacao de "Pontos" e "Mapa de calor" para entender melhor a distribuicao.
+          </div>
+        </section>
+
+        <section>
+          <h3>Sugestoes de especies para praticar</h3>
+          <table>
+            <tr>
+              <th>Especie</th>
+              <th>Tipo</th>
+              <th>Porque e interessante</th>
+            </tr>
+            <tr>
+              <td><em>Araucaria angustifolia</em></td>
+              <td>Arvore nativa</td>
+              <td>Ameacada, sensivel ao clima</td>
+            </tr>
+            <tr>
+              <td><em>Euterpe edulis</em></td>
+              <td>Palmeira</td>
+              <td>Mata Atlantica, muito coletada</td>
+            </tr>
+            <tr>
+              <td><em>Ilex paraguariensis</em></td>
+              <td>Arvore nativa</td>
+              <td>Erva-mate, importancia economica</td>
+            </tr>
+            <tr>
+              <td><em>Cedrela fissilis</em></td>
+              <td>Arvore nativa</td>
+              <td>Cedro, madeira nobre ameacada</td>
+            </tr>
+          </table>
+          <p class="small">Cada aluno pode escolher uma especie diferente para comparar resultados!</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 12: RESUMO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>O que aprendemos hoje</h2>
+        <ul>
+          <li><strong>Dados de ocorrencia</strong> = registros de onde uma especie foi encontrada (coordenadas)</li>
+          <li><strong>GBIF</strong> = maior banco de dados de biodiversidade do mundo, gratuito e aberto</li>
+          <li><strong>Fontes dos dados</strong> = herbarios, pesquisas, ciencia cidada, governo</li>
+          <li><strong>Qualidade importa</strong> = coordenadas erradas, duplicatas e dados antigos prejudicam o modelo</li>
+          <li><strong>Vies amostral</strong> = mais coletas perto de cidades/universidades</li>
+          <li><strong>Nome cientifico</strong> = essencial para busca precisa</li>
+        </ul>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 13: PRÓXIMA AULA -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Proxima aula</h2>
+        <div class="box">
+          <strong>Aula 3:</strong> Pseudo-ausencias - como criar pontos de "nao-ocorrencia" para ensinar o modelo onde a especie NAO esta.
+        </div>
+        <p>Ate la, mantenham o TAIPA aberto na etapa de <strong>Busca de Especies</strong> com a especie escolhida.</p>
+        <br>
+        <div class="box center" style="font-size: 1.2em;">
+          Duvidas?
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: false,
+      hash: true,
+      transition: 'slide',
+      slideNumber: true,
+      plugins: [ ]
+    });
+  </script>
+</body>
+</html>
