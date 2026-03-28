@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pseudo-ausências - SDM</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+  <style>
+    :root {
+      --main-color: #2c7a3f;
+      --accent-color: #1a5c2e;
+      --text-color: #333;
+      --background-color: #fff;
+      --box-bg-color: rgba(44, 122, 63, 0.08);
+      --warning-color: #d35400;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      text-transform: none;
+      color: var(--main-color);
+      margin-bottom: 0.5em;
+      font-weight: 600;
+    }
+
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.4em; margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.1em; margin-bottom: 0.3em; }
+
+    .reveal p, .reveal li {
+      font-size: 0.78em;
+      line-height: 1.4;
+    }
+
+    .reveal .small { font-size: 0.6em; }
+    .reveal .center { text-align: center; }
+
+    .reveal .highlight {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .reveal .box {
+      border: 1px solid var(--main-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: var(--box-bg-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .reveal .box-warning {
+      border: 1px solid var(--warning-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(211, 84, 0, 0.08);
+    }
+
+    .reveal .box-blue {
+      border: 1px solid #2980b9;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(41, 128, 185, 0.08);
+    }
+
+    .reveal .columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .reveal .column {
+      flex: 1;
+    }
+
+    .reveal img {
+      border: none !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+      background: none !important;
+      border-radius: 8px;
+    }
+
+    .reveal .cite {
+      font-size: 0.6em;
+      font-style: italic;
+      text-align: right;
+      margin-top: 20px;
+      color: #777;
+    }
+
+    .reveal ol, .reveal ul {
+      margin-left: 0.8em;
+    }
+
+    .reveal li {
+      margin-bottom: 0.25em;
+    }
+
+    .reveal .slides section {
+      padding: 10px 40px;
+    }
+
+    .reveal .emoji {
+      font-size: 1.2em;
+      margin-right: 5px;
+    }
+
+    .reveal .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: var(--main-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 0.8em;
+      margin-right: 8px;
+    }
+
+    .reveal .controls {
+      opacity: 0.6;
+    }
+
+    .reveal .progress {
+      height: 5px;
+      color: var(--main-color);
+    }
+
+    .reveal table {
+      font-size: 0.7em;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .reveal table th {
+      background-color: var(--main-color);
+      color: white;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .reveal table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .reveal table tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+
+    .reveal .code-example {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.4;
+      font-size: 0.65em;
+      background-color: #f0f7f0;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #cde6cd;
+    }
+
+    .reveal .diagram {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.3;
+      font-size: 0.55em;
+      background-color: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: CAPA -->
+      <!-- ============================================ -->
+      <section>
+        <h1>Pseudo-ausências</h1>
+        <h3>Como ensinar ao modelo onde a espécie<br>NÃO está?</h3>
+        <br>
+        <p class="small">Aula 3 - Disciplina: Mudanças Climáticas</p>
+        <p class="small">Engenharia Florestal - UDESC</p>
+        <p class="small">Prof. Pedro Higuchi</p>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: RECAPITULAÇÃO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Recapitulando</h2>
+        <ul>
+          <li><strong>Aula 1:</strong> Modelos, algoritmos e Random Forest</li>
+          <li><strong>Aula 2:</strong> Dados de ocorrência do GBIF - onde a espécie FOI encontrada</li>
+        </ul>
+        <div class="box" style="margin-top: 15px;">
+          <strong>Hoje:</strong> vamos entender por que precisamos de pontos onde a espécie <span class="highlight">NÃO está</span> e como gerar esses pontos - a segunda etapa no TAIPA.
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: ROTEIRO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Roteiro da aula</h2>
+        <ol>
+          <li>Por que o modelo precisa de <strong>ausências</strong>?</li>
+          <li>O problema: <strong>não temos ausências reais</strong></li>
+          <li>A solução: <strong>pseudo-ausências</strong></li>
+          <li>Estratégia de <strong>buffer</strong></li>
+          <li>Parâmetros importantes</li>
+          <li>Prática no <strong>TAIPA</strong></li>
+        </ol>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: POR QUE AUSÊNCIAS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Por que o modelo precisa de ausências?</h2>
+          <p>Lembram da analogia do detetive? O modelo precisa aprender <span class="highlight">dois tipos de informação</span>:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Presenças</strong><br>
+                "Onde a espécie ESTÁ"<br>
+                Condições favoráveis
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Ausências</strong><br>
+                "Onde a espécie NÃO está"<br>
+                Condições desfavoráveis
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Analogia: aprender a reconhecer uma fruta</h3>
+          <p>Imagine ensinar uma criança o que é uma <strong>maçã</strong>:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Só com exemplos positivos:</strong>
+                <ul>
+                  <li>"Isso é uma maçã"</li>
+                  <li>"Isso também é uma maçã"</li>
+                  <li>A criança nunca vê o que NÃO é maçã</li>
+                </ul>
+                <p>Resultado: pode achar que tudo que é redondo e vermelho é maçã!</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Com exemplos positivos E negativos:</strong>
+                <ul>
+                  <li>"Isso é uma maçã"</li>
+                  <li>"Isso NÃO é uma maçã (é um tomate)"</li>
+                  <li>A criança aprende a diferenciar!</li>
+                </ul>
+                <p>Resultado: aprende as características que distinguem a maçã.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>No contexto da modelagem</h3>
+          <p>É a mesma lógica para o Random Forest:</p>
+          <div class="box">
+            <ul>
+              <li><strong>Presenças:</strong> "Neste local com temperatura X e chuva Y, a espécie EXISTE" → classe <strong>1</strong></li>
+              <li><strong>Ausências:</strong> "Neste local com temperatura W e chuva Z, a espécie NÃO EXISTE" → classe <strong>0</strong></li>
+            </ul>
+          </div>
+          <p>Com as duas classes, o modelo aprende a <span class="highlight">fronteira</span> entre condições favoráveis e desfavoráveis.</p>
+          <p class="small">Sem ausências, o modelo não tem como comparar - não sabe o que torna um lugar "bom" vs. "ruim" para a espécie.</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: O PROBLEMA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>O problema: não temos ausências reais</h2>
+          <p>Por que não podemos simplesmente usar <span class="highlight">dados de ausência verdadeiros</span>?</p>
+        </section>
+
+        <section>
+          <h3>Ausência real vs. não detecção</h3>
+          <div class="box-warning">
+            <strong>Pergunta fundamental:</strong> se eu fui a um lugar e NÃO encontrei a espécie, ela realmente não está lá? Ou eu simplesmente não a encontrei?
+          </div>
+          <ul>
+            <li>A espécie pode estar lá, mas <strong>não foi vista</strong> (era período de dormência, estava escondida, etc.)</li>
+            <li>A amostragem pode ter sido <strong>insuficiente</strong></li>
+            <li>A espécie pode estar lá em <strong>baixa densidade</strong></li>
+          </ul>
+          <p class="small">Na ecologia, isso é chamado de <strong>detecção imperfeita</strong> - é um problema clássico!</p>
+        </section>
+
+        <section>
+          <h3>Exemplo prático</h3>
+          <p>Imagine que você fez um inventário florestal em uma área de 1 hectare:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Você encontrou:</strong>
+                <ul>
+                  <li>50 indivíduos de <em>Ocotea porosa</em></li>
+                  <li>30 de <em>Araucaria angustifolia</em></li>
+                  <li>0 de <em>Cedrela fissilis</em></li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Pode concluir que <em>Cedrela</em> não existe lá?</strong>
+                <ul>
+                  <li>Talvez exista no hectare vizinho</li>
+                  <li>Talvez exista como plântula pequena</li>
+                  <li>Talvez tenha sido cortada recentemente</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Dados do GBIF: só presenças</h3>
+          <p>O GBIF registra apenas onde a espécie <strong>foi encontrada</strong>:</p>
+          <ul>
+            <li>Herbários registram: "coletei esta planta AQUI"</li>
+            <li>iNaturalist registra: "fotografei esta espécie AQUI"</li>
+            <li>Ninguém registra: "fui a este lugar e NÃO encontrei nada"</li>
+          </ul>
+          <div class="box" style="margin-top: 10px;">
+            <strong>Conclusão:</strong> precisamos de uma forma inteligente de <span class="highlight">criar pontos de ausência</span> para alimentar o modelo. Esses pontos criados artificialmente são chamados de <strong>pseudo-ausências</strong>.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: PSEUDO-AUSÊNCIAS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>O que são pseudo-ausências?</h2>
+          <div class="box">
+            Pseudo-ausências são <span class="highlight">pontos gerados artificialmente</span> em locais onde assumimos que a espécie <strong>provavelmente não ocorre</strong>.
+          </div>
+          <p>O prefixo "pseudo" significa "falso" - são ausências <strong>presumidas</strong>, não confirmadas em campo.</p>
+        </section>
+
+        <section>
+          <h3>A lógica por trás</h3>
+          <p>Se a espécie foi registrada em certos locais, então locais <strong>próximos mas diferentes</strong> provavelmente representam condições onde ela não vive.</p>
+          <div class="diagram">
+Pontos de PRESENÇA           Pontos de PSEUDO-AUSÊNCIA
+(dados reais do GBIF)        (gerados pelo computador)
+
+Classe 1                     Classe 0
+"A espécie está aqui"        "A espécie provavelmente
+                               não está aqui"
+          </div>
+          <p class="small">Juntos, presenças + pseudo-ausências formam o conjunto de dados completo para treinar o Random Forest.</p>
+        </section>
+
+        <section>
+          <h3>Diferentes estratégias</h3>
+          <p>Existem várias formas de gerar pseudo-ausências:</p>
+          <table>
+            <tr>
+              <th>Estratégia</th>
+              <th>Como funciona</th>
+              <th>Vantagem</th>
+            </tr>
+            <tr>
+              <td><strong>Aleatória</strong></td>
+              <td>Pontos aleatórios em toda a área de estudo</td>
+              <td>Simples</td>
+            </tr>
+            <tr>
+              <td><strong>Buffer</strong></td>
+              <td>Pontos em um raio ao redor das presenças</td>
+              <td>Mais realista</td>
+            </tr>
+            <tr>
+              <td><strong>Ambiental</strong></td>
+              <td>Pontos em condições climáticas diferentes</td>
+              <td>Mais informativa</td>
+            </tr>
+          </table>
+          <div class="box-blue" style="margin-top: 8px;">
+            <strong>No TAIPA:</strong> usamos a estratégia de <strong>buffer</strong>, que é a mais utilizada e equilibra simplicidade com qualidade.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: ESTRATÉGIA DE BUFFER -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Estratégia de buffer</h2>
+          <p>A estratégia que o TAIPA utiliza. Vamos entender passo a passo:</p>
+        </section>
+
+        <section>
+          <h3>Passo 1: Área de buffer</h3>
+          <p>Criamos um <span class="highlight">círculo</span> ao redor de cada ponto de presença:</p>
+          <div class="diagram">
+      . . . . . . . . . .
+    . . . . . . . . . . . .
+  . . . . .           . . . .
+  . . . .  [PRESENÇA]   . . .
+  . . . . .           . . . .
+    . . . . . . . . . . . .
+      . . . . . . . . . .
+
+  [. . .] = Área de buffer (200 km)
+          </div>
+          <p class="small">A distância do buffer define o raio máximo. Valores típicos: 100-500 km.</p>
+        </section>
+
+        <section>
+          <h3>Passo 2: Zona de exclusão</h3>
+          <p>Removemos uma área <strong>muito próxima</strong> das presenças:</p>
+          <div class="diagram">
+      . . . . . . . . . .
+    . . . . . . . . . . . .
+  . . . .               . . .
+  . . .   ///////////   . . .
+  . . .   /PRESENÇA /   . . .
+  . . .   ///////////   . . .
+  . . . .               . . .
+    . . . . . . . . . . . .
+
+  [///] = Zona de exclusão (10 km)
+  [. .] = Área válida para pseudo-ausências
+          </div>
+          <p class="small">A zona de exclusão evita colocar "ausências" muito perto de onde a espécie existe.</p>
+        </section>
+
+        <section>
+          <h3>Passo 3: Gerar pontos aleatórios</h3>
+          <p>Geramos pontos <span class="highlight">aleatórios</span> na área entre o buffer e a exclusão:</p>
+          <div class="diagram">
+      * . . . * . . . . .
+    . . * . . . . . * . . .
+  . * . .               . * .
+  . . .   ///////////   . . .
+  . * .   /PRESENÇA /   . . .
+  . . .   ///////////   . * .
+  . . . *               . . .
+    . * . . . . * . . . . .
+
+  [ * ] = Pseudo-ausências geradas
+          </div>
+          <p class="small">O TAIPA verifica que todos os pontos caem <strong>dentro do Brasil</strong>.</p>
+        </section>
+
+        <section>
+          <h3>Por que buffer e não aleatório total?</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Aleatório total:</strong>
+                <ul>
+                  <li>Pontos podem cair muito longe</li>
+                  <li>Condições muito diferentes</li>
+                  <li>Modelo aprende diferença trivial</li>
+                  <li>"Claro que a Araucária não vive no deserto!"</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Buffer (TAIPA):</strong>
+                <ul>
+                  <li>Pontos próximos às presenças</li>
+                  <li>Condições ambientais similares</li>
+                  <li>Modelo aprende diferença <strong>sutil</strong></li>
+                  <li>"O que diferencia o lugar com e sem a espécie?"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="small">Com buffer, forçamos o modelo a identificar as variáveis que realmente importam para a espécie.</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: PARÂMETROS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Parâmetros no TAIPA</h2>
+          <p>Três ajustes que você precisa definir:</p>
+        </section>
+
+        <section>
+          <h3>1. Número de pseudo-ausências</h3>
+          <div class="box">
+            <strong>Quantos pontos de "não-ocorrência" gerar?</strong>
+          </div>
+          <table>
+            <tr>
+              <th>Proporção</th>
+              <th>Exemplo</th>
+              <th>Recomendação</th>
+            </tr>
+            <tr>
+              <td><strong>1:1</strong></td>
+              <td>100 presenças → 100 ausências</td>
+              <td>Equilibrado - recomendado para começar</td>
+            </tr>
+            <tr>
+              <td><strong>1:2</strong></td>
+              <td>100 presenças → 200 ausências</td>
+              <td>Bom para espécie com poucos dados</td>
+            </tr>
+            <tr>
+              <td><strong>1:5</strong></td>
+              <td>100 presenças → 500 ausências</td>
+              <td>Pode causar desbalanceamento</td>
+            </tr>
+          </table>
+          <div class="box-blue" style="margin-top: 8px;">
+            <strong>Dica:</strong> no TAIPA, o padrão é usar o mesmo número de presenças. Comece com 1:1 e ajuste se necessário.
+          </div>
+        </section>
+
+        <section>
+          <h3>2. Distância do buffer (km)</h3>
+          <div class="box">
+            <strong>Até onde buscar pseudo-ausências ao redor das presenças?</strong>
+          </div>
+          <ul>
+            <li><strong>Buffer pequeno (50-100 km):</strong> pseudo-ausências muito próximas, condições muito similares</li>
+            <li><strong>Buffer médio (100-300 km):</strong> bom equilíbrio - <span class="highlight">recomendado</span></li>
+            <li><strong>Buffer grande (300-1000 km):</strong> pseudo-ausências distantes, maior variedade ambiental</li>
+          </ul>
+          <p class="small">O valor padrão no TAIPA é <strong>200 km</strong>. Para espécies com distribuição ampla, pode-se aumentar.</p>
+        </section>
+
+        <section>
+          <h3>3. Raio de exclusão (km)</h3>
+          <div class="box">
+            <strong>Qual a distância mínima entre uma pseudo-ausência e uma presença?</strong>
+          </div>
+          <ul>
+            <li><strong>Exclusão pequena (5-10 km):</strong> permite pseudo-ausências relativamente próximas</li>
+            <li><strong>Exclusão média (10-30 km):</strong> garante uma separação razoável</li>
+            <li><strong>Exclusão grande (30-100 km):</strong> pode criar uma "zona morta" muito grande</li>
+          </ul>
+          <div class="box-warning" style="margin-top: 8px;">
+            <strong>Cuidado:</strong> se o raio de exclusão for muito grande e o buffer muito pequeno, pode não sobrar área para gerar pontos!
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: VISUALIZANDO NO MAPA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Interpretando o resultado</h2>
+          <p>Depois de gerar as pseudo-ausências, o TAIPA mostra um <span class="highlight">mapa com dois tipos de pontos</span>:</p>
+        </section>
+
+        <section>
+          <h3>O que você vai ver no mapa</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-blue">
+                <strong style="color: #2980b9;">Pontos AZUIS = Presenças</strong>
+                <ul>
+                  <li>Registros reais do GBIF</li>
+                  <li>Locais confirmados da espécie</li>
+                  <li>Dados da etapa anterior</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong style="color: #c0392b;">Pontos VERMELHOS = Pseudo-ausências</strong>
+                <ul>
+                  <li>Gerados pelo algoritmo</li>
+                  <li>Locais presumidos de ausência</li>
+                  <li>Dentro do buffer, fora da exclusão</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>O que verificar</h3>
+          <ul>
+            <li>Os pontos vermelhos estão <strong>ao redor</strong> dos azuis? (buffer funcionando)</li>
+            <li>Nenhum ponto vermelho está <strong>em cima</strong> de um azul? (exclusão funcionando)</li>
+            <li>Os pontos estão todos <strong>dentro do Brasil</strong>?</li>
+            <li>Há uma <strong>boa distribuição espacial</strong>?</li>
+          </ul>
+          <div class="box" style="margin-top: 8px;">
+            <strong>Dica:</strong> se os pontos vermelhos parecem concentrados demais, tente aumentar a distância do buffer.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: CUIDADOS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Cuidados importantes</h2>
+          <p>Pseudo-ausências são uma <span class="highlight">aproximação</span>. Alguns cuidados:</p>
+        </section>
+
+        <section>
+          <h3>Limitações das pseudo-ausências</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Possíveis problemas:</strong>
+                <ul>
+                  <li>Um ponto "ausência" pode ser um local onde a espécie existe mas não foi coletada</li>
+                  <li>A escolha dos parâmetros influencia o resultado do modelo</li>
+                  <li>Pseudo-ausências aleatórias podem não representar a realidade</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Como minimizar:</strong>
+                <ul>
+                  <li>Usar a estratégia de buffer (TAIPA já faz isso!)</li>
+                  <li>Ajustar parâmetros com base no conhecimento da espécie</li>
+                  <li>Manter proporção equilibrada (1:1)</li>
+                  <li>Revisar visualmente o mapa</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Influência no modelo</h3>
+          <p>A qualidade das pseudo-ausências afeta diretamente o modelo:</p>
+          <div class="box">
+            <ul>
+              <li><strong>Pseudo-ausências muito longe:</strong> modelo aprende diferença óbvia → superestima a área</li>
+              <li><strong>Pseudo-ausências muito perto:</strong> modelo não consegue distinguir → subestima a área</li>
+              <li><strong>Buffer equilibrado:</strong> modelo aprende diferenças reais → resultado mais confiável</li>
+            </ul>
+          </div>
+          <p class="small">É por isso que a escolha da estratégia e dos parâmetros importa tanto!</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: PRÁTICA NO TAIPA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <p>Agora vamos aplicar o que aprendemos!</p>
+          <div class="box center">
+            <strong>Etapa 2 do TAIPA:</strong> Pseudo-ausências
+          </div>
+        </section>
+
+        <section>
+          <h3>Passo a passo</h3>
+          <ol style="list-style: none; padding: 0; margin: 0;">
+            <li style="margin-bottom: 10px;"><span class="step-number">1</span> <strong>Verificar</strong> que você já tem os dados de ocorrência (Etapa 1 completa)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">2</span> <strong>Avançar</strong> para a etapa "Pseudo-ausências"</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">3</span> <strong>Definir o número</strong> de pseudo-ausências (sugestão: igual ao de presenças)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">4</span> <strong>Ajustar o buffer</strong> (sugestão: 200 km)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">5</span> <strong>Ajustar a exclusão</strong> (sugestão: 10 km)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">6</span> <strong>Clicar "Gerar"</strong> e analisar o mapa resultante</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>O que observar</h3>
+          <ul>
+            <li>O número de pseudo-ausências geradas é o esperado?</li>
+            <li>Os pontos vermelhos formam um <strong>"anel"</strong> ao redor dos azuis?</li>
+            <li>Algum ponto caiu em local <strong>obviamente errado</strong>? (no oceano, fora do Brasil)</li>
+            <li>A distribuição parece <strong>equilibrada</strong> geograficamente?</li>
+          </ul>
+          <div class="box-blue" style="margin-top: 8px;">
+            <strong>Experimente:</strong> gere pseudo-ausências com diferentes configurações de buffer (100 km, 200 km, 500 km) e compare os mapas. Como muda?
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 12: RESUMO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>O que aprendemos hoje</h2>
+        <ul>
+          <li><strong>O modelo precisa de ausências</strong> para diferenciar condições favoráveis e desfavoráveis</li>
+          <li><strong>Ausências reais são raras</strong> - não sabemos com certeza onde a espécie não existe</li>
+          <li><strong>Pseudo-ausências</strong> = pontos gerados artificialmente onde assumimos que a espécie não está</li>
+          <li><strong>Estratégia de buffer</strong> = gerar pontos em um raio ao redor das presenças, com zona de exclusão</li>
+          <li><strong>Parâmetros importam:</strong> número de pontos, distância do buffer, raio de exclusão</li>
+          <li><strong>Revisar visualmente</strong> o mapa é essencial para garantir qualidade</li>
+        </ul>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 13: PRÓXIMA AULA -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Próxima aula</h2>
+        <div class="box">
+          <strong>Aula 4:</strong> Análise Bioclimática - como extrair e selecionar as variáveis climáticas que melhor explicam a distribuição da espécie.
+        </div>
+        <p>Até lá, deixem o TAIPA com as pseudo-ausências geradas para a espécie escolhida.</p>
+        <br>
+        <div class="box center" style="font-size: 1.2em;">
+          Dúvidas?
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: false,
+      hash: true,
+      transition: 'slide',
+      slideNumber: true,
+      plugins: [ ]
+    });
+  </script>
+</body>
+</html>
