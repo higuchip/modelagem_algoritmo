@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Análise Bioclimática - SDM</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+  <style>
+    :root {
+      --main-color: #2c7a3f;
+      --accent-color: #1a5c2e;
+      --text-color: #333;
+      --background-color: #fff;
+      --box-bg-color: rgba(44, 122, 63, 0.08);
+      --warning-color: #d35400;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      text-transform: none;
+      color: var(--main-color);
+      margin-bottom: 0.5em;
+      font-weight: 600;
+    }
+
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.4em; margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.1em; margin-bottom: 0.3em; }
+
+    .reveal p, .reveal li {
+      font-size: 0.78em;
+      line-height: 1.4;
+    }
+
+    .reveal .small { font-size: 0.6em; }
+    .reveal .center { text-align: center; }
+
+    .reveal .highlight {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .reveal .box {
+      border: 1px solid var(--main-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: var(--box-bg-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .reveal .box-warning {
+      border: 1px solid var(--warning-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(211, 84, 0, 0.08);
+    }
+
+    .reveal .box-blue {
+      border: 1px solid #2980b9;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(41, 128, 185, 0.08);
+    }
+
+    .reveal .columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .reveal .column {
+      flex: 1;
+    }
+
+    .reveal img {
+      border: none !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+      background: none !important;
+      border-radius: 8px;
+    }
+
+    .reveal .cite {
+      font-size: 0.6em;
+      font-style: italic;
+      text-align: right;
+      margin-top: 20px;
+      color: #777;
+    }
+
+    .reveal ol, .reveal ul {
+      margin-left: 0.8em;
+    }
+
+    .reveal li {
+      margin-bottom: 0.25em;
+    }
+
+    .reveal .slides section {
+      padding: 10px 40px;
+    }
+
+    .reveal .emoji {
+      font-size: 1.2em;
+      margin-right: 5px;
+    }
+
+    .reveal .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: var(--main-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 0.8em;
+      margin-right: 8px;
+    }
+
+    .reveal .controls {
+      opacity: 0.6;
+    }
+
+    .reveal .progress {
+      height: 5px;
+      color: var(--main-color);
+    }
+
+    .reveal table {
+      font-size: 0.7em;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .reveal table th {
+      background-color: var(--main-color);
+      color: white;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .reveal table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .reveal table tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+
+    .reveal .code-example {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.4;
+      font-size: 0.65em;
+      background-color: #f0f7f0;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #cde6cd;
+    }
+
+    .reveal .diagram {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.3;
+      font-size: 0.55em;
+      background-color: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: CAPA -->
+      <!-- ============================================ -->
+      <section>
+        <h1>Análise Bioclimática</h1>
+        <h3>Quais variáveis climáticas explicam<br>a distribuição da espécie?</h3>
+        <br>
+        <p class="small">Aula 4 - Disciplina: Mudanças Climáticas</p>
+        <p class="small">Engenharia Florestal - UDESC</p>
+        <p class="small">Prof. Pedro Higuchi</p>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: RECAPITULAÇÃO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Recapitulando</h2>
+        <ul>
+          <li><strong>Aula 1:</strong> Modelos, algoritmos e Random Forest</li>
+          <li><strong>Aula 2:</strong> Dados de ocorrência do GBIF - onde a espécie FOI encontrada</li>
+          <li><strong>Aula 3:</strong> Pseudo-ausências - onde a espécie provavelmente NÃO está</li>
+        </ul>
+        <div class="box" style="margin-top: 15px;">
+          <strong>Hoje:</strong> vamos entender o que são <span class="highlight">variáveis bioclimáticas</span>, de onde vêm, e como selecionar as mais relevantes para modelar a distribuição da espécie.
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: ROTEIRO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Roteiro da aula</h2>
+        <ol>
+          <li>O que são <strong>variáveis bioclimáticas</strong>?</li>
+          <li>As <strong>19 variáveis</strong> do WorldClim</li>
+          <li>De onde vêm esses dados?</li>
+          <li>Por que precisamos <strong>selecionar</strong> variáveis?</li>
+          <li>O problema da <strong>multicolinearidade</strong></li>
+          <li>Métodos de <strong>seleção de variáveis</strong></li>
+          <li>Prática no <strong>TAIPA</strong></li>
+        </ol>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: O QUE SÃO VARIÁVEIS BIOCLIMÁTICAS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>O que são variáveis bioclimáticas?</h2>
+          <div class="box">
+            Variáveis bioclimáticas são <span class="highlight">resumos estatísticos do clima</span> que têm significado biológico direto para as espécies.
+          </div>
+          <p>Em vez de usar dados brutos de temperatura e precipitação mês a mês, usamos variáveis que capturam padrões relevantes para a vida dos organismos.</p>
+        </section>
+
+        <section>
+          <h3>Analogia: boletim escolar</h3>
+          <p>Imagine que você quer avaliar o desempenho de um aluno:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Dados brutos:</strong>
+                <ul>
+                  <li>Nota de cada prova</li>
+                  <li>Nota de cada trabalho</li>
+                  <li>12 meses x várias disciplinas</li>
+                  <li>Centenas de números!</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Resumos úteis:</strong>
+                <ul>
+                  <li>Média anual</li>
+                  <li>Nota mais alta / mais baixa</li>
+                  <li>Variação entre bimestres</li>
+                  <li>Poucos números, muita informação!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="small">Variáveis bioclimáticas fazem o mesmo: resumem o clima em números biologicamente significativos.</p>
+        </section>
+
+        <section>
+          <h3>Por que "bio" + "climáticas"?</h3>
+          <p>Não são qualquer resumo do clima. São calculadas pensando no que <span class="highlight">importa para os seres vivos</span>:</p>
+          <ul>
+            <li><strong>Temperatura média anual:</strong> define o regime térmico geral</li>
+            <li><strong>Precipitação do mês mais seco:</strong> indica estresse hídrico</li>
+            <li><strong>Sazonalidade da temperatura:</strong> indica estabilidade climática</li>
+          </ul>
+          <div class="box-blue" style="margin-top: 8px;">
+            <strong>Exemplo florestal:</strong> a <em>Araucaria angustifolia</em> precisa de invernos frios. A variável "temperatura mínima do mês mais frio" (BIO6) capta exatamente essa exigência.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: AS 19 VARIÁVEIS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>As 19 variáveis bioclimáticas</h2>
+          <p>O padrão internacional define <span class="highlight">19 variáveis</span>, divididas em dois grupos:</p>
+        </section>
+
+        <section>
+          <h3>Variáveis de temperatura (BIO1-BIO11)</h3>
+          <table>
+            <tr>
+              <th>Código</th>
+              <th>Variável</th>
+            </tr>
+            <tr>
+              <td><strong>BIO1</strong></td>
+              <td>Temperatura média anual</td>
+            </tr>
+            <tr>
+              <td><strong>BIO2</strong></td>
+              <td>Amplitude térmica diária média</td>
+            </tr>
+            <tr>
+              <td><strong>BIO3</strong></td>
+              <td>Isotermalidade (BIO2/BIO7 x 100)</td>
+            </tr>
+            <tr>
+              <td><strong>BIO4</strong></td>
+              <td>Sazonalidade da temperatura (desvio padrão x 100)</td>
+            </tr>
+            <tr>
+              <td><strong>BIO5</strong></td>
+              <td>Temperatura máxima do mês mais quente</td>
+            </tr>
+            <tr>
+              <td><strong>BIO6</strong></td>
+              <td>Temperatura mínima do mês mais frio</td>
+            </tr>
+            <tr>
+              <td><strong>BIO7</strong></td>
+              <td>Amplitude térmica anual (BIO5 - BIO6)</td>
+            </tr>
+            <tr>
+              <td><strong>BIO8</strong></td>
+              <td>Temperatura média do trimestre mais chuvoso</td>
+            </tr>
+            <tr>
+              <td><strong>BIO9</strong></td>
+              <td>Temperatura média do trimestre mais seco</td>
+            </tr>
+            <tr>
+              <td><strong>BIO10</strong></td>
+              <td>Temperatura média do trimestre mais quente</td>
+            </tr>
+            <tr>
+              <td><strong>BIO11</strong></td>
+              <td>Temperatura média do trimestre mais frio</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Variáveis de precipitação (BIO12-BIO19)</h3>
+          <table>
+            <tr>
+              <th>Código</th>
+              <th>Variável</th>
+            </tr>
+            <tr>
+              <td><strong>BIO12</strong></td>
+              <td>Precipitação anual</td>
+            </tr>
+            <tr>
+              <td><strong>BIO13</strong></td>
+              <td>Precipitação do mês mais chuvoso</td>
+            </tr>
+            <tr>
+              <td><strong>BIO14</strong></td>
+              <td>Precipitação do mês mais seco</td>
+            </tr>
+            <tr>
+              <td><strong>BIO15</strong></td>
+              <td>Sazonalidade da precipitação (coeficiente de variação)</td>
+            </tr>
+            <tr>
+              <td><strong>BIO16</strong></td>
+              <td>Precipitação do trimestre mais chuvoso</td>
+            </tr>
+            <tr>
+              <td><strong>BIO17</strong></td>
+              <td>Precipitação do trimestre mais seco</td>
+            </tr>
+            <tr>
+              <td><strong>BIO18</strong></td>
+              <td>Precipitação do trimestre mais quente</td>
+            </tr>
+            <tr>
+              <td><strong>BIO19</strong></td>
+              <td>Precipitação do trimestre mais frio</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Relação entre as variáveis</h3>
+          <div class="diagram">
+Dados mensais de temperatura e precipitação
+              |
+              v
+   Cálculos estatísticos (médias, extremos, variação)
+              |
+              v
+   19 variáveis bioclimáticas (BIO1 a BIO19)
+              |
+              v
+   Mapas em formato raster (grid de pixels)
+   Cada pixel = valor da variável naquele local
+          </div>
+          <p class="small">Cada variável é um mapa onde cada pixel contém o valor climático correspondente àquela localização geográfica.</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: DE ONDE VÊM OS DADOS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>De onde vêm esses dados?</h2>
+          <p>Existem duas bases de dados principais de variáveis bioclimáticas:</p>
+        </section>
+
+        <section>
+          <h3>WorldClim</h3>
+          <div class="box">
+            <strong>WorldClim</strong> (worldclim.org) é a base de dados climáticos mais utilizada em modelagem de distribuição de espécies.
+          </div>
+          <ul>
+            <li><strong>Fonte:</strong> dados de estações meteorológicas interpolados espacialmente</li>
+            <li><strong>Cobertura:</strong> global</li>
+            <li><strong>Resolução:</strong> de ~1 km a ~340 km (vários níveis)</li>
+            <li><strong>Período atual:</strong> médias de 1970-2000</li>
+            <li><strong>Projeções futuras:</strong> disponíveis para diferentes cenários climáticos (SSPs)</li>
+          </ul>
+          <p class="small">Fick & Hijmans (2017). WorldClim 2: new 1-km spatial resolution climate surfaces for global land areas.</p>
+        </section>
+
+        <section>
+          <h3>CHELSA</h3>
+          <div class="box-blue">
+            <strong>CHELSA</strong> (chelsa-climate.org) é uma alternativa mais recente, com melhor tratamento de áreas montanhosas.
+          </div>
+          <ul>
+            <li><strong>Fonte:</strong> dados de reanálise atmosférica + estações</li>
+            <li><strong>Diferencial:</strong> considera efeitos orográficos (relevo) na precipitação</li>
+            <li><strong>Resolução:</strong> ~1 km</li>
+            <li><strong>Período atual:</strong> 1981-2010</li>
+          </ul>
+          <div class="box" style="margin-top: 8px;">
+            <strong>No TAIPA:</strong> utiliza dados do <strong>WorldClim</strong>, a base mais amplamente utilizada em estudos de SDM.
+          </div>
+        </section>
+
+        <section>
+          <h3>Como funciona na prática?</h3>
+          <div class="diagram">
+Ponto de ocorrência:        Mapa bioclimático (raster):
+lat: -27.5, lon: -50.3      BIO1 = temperatura média anual
+        |                              |
+        v                              v
+   O sistema "consulta" o pixel do mapa naquela coordenada
+                    |
+                    v
+         Resultado: BIO1 = 16.2 °C naquele ponto
+          </div>
+          <p>Para cada ponto (presença ou pseudo-ausência), o TAIPA <span class="highlight">extrai o valor</span> de todas as 19 variáveis bioclimáticas. Isso cria a tabela de dados que alimenta o Random Forest.</p>
+        </section>
+
+        <section>
+          <h3>A tabela de dados para o modelo</h3>
+          <table>
+            <tr>
+              <th>Ponto</th>
+              <th>Classe</th>
+              <th>BIO1</th>
+              <th>BIO2</th>
+              <th>BIO12</th>
+              <th>...</th>
+            </tr>
+            <tr>
+              <td>Presença 1</td>
+              <td>1</td>
+              <td>16.2</td>
+              <td>10.5</td>
+              <td>1520</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <td>Presença 2</td>
+              <td>1</td>
+              <td>15.8</td>
+              <td>11.0</td>
+              <td>1480</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <td>Pseudo-aus. 1</td>
+              <td>0</td>
+              <td>22.1</td>
+              <td>9.3</td>
+              <td>1100</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <td>Pseudo-aus. 2</td>
+              <td>0</td>
+              <td>20.5</td>
+              <td>8.7</td>
+              <td>950</td>
+              <td>...</td>
+            </tr>
+          </table>
+          <p class="small">Esta tabela é a entrada do Random Forest: ele aprende quais combinações de BIO1, BIO2, ..., BIO19 distinguem presença (1) de ausência (0).</p>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: POR QUE SELECIONAR VARIÁVEIS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Por que selecionar variáveis?</h2>
+          <p>Se temos 19 variáveis disponíveis, por que não usar <strong>todas</strong>?</p>
+        </section>
+
+        <section>
+          <h3>Problema 1: Redundância</h3>
+          <p>Muitas variáveis bioclimáticas medem coisas <span class="highlight">muito parecidas</span>:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Exemplo:</strong>
+                <ul>
+                  <li>BIO1 = Temperatura média anual</li>
+                  <li>BIO10 = Temp. do trimestre mais quente</li>
+                  <li>BIO11 = Temp. do trimestre mais frio</li>
+                </ul>
+                <p>Essas três são altamente correlacionadas!</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Analogia:</strong>
+                <p>É como pedir em um formulário:</p>
+                <ul>
+                  <li>Sua idade?</li>
+                  <li>Seu ano de nascimento?</li>
+                  <li>Há quantos anos você nasceu?</li>
+                </ul>
+                <p>São três perguntas para a mesma informação!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Problema 2: Overfitting</h3>
+          <div class="box">
+            <strong>Overfitting</strong> = o modelo "decora" os dados de treino em vez de aprender padrões reais.
+          </div>
+          <p>Usar variáveis demais aumenta o risco de overfitting:</p>
+          <ul>
+            <li>Com muitas variáveis, o modelo encontra padrões <strong>espúrios</strong> (falsos)</li>
+            <li>O modelo funciona bem nos dados de treino, mas <strong>falha em dados novos</strong></li>
+            <li>A projeção para cenários futuros fica <strong>menos confiável</strong></li>
+          </ul>
+          <p class="small">Regra prática: quanto mais simples o modelo (menos variáveis), mais generalizável ele tende a ser.</p>
+        </section>
+
+        <section>
+          <h3>Problema 3: Interpretabilidade</h3>
+          <p>Um modelo com <strong>poucas variáveis</strong> é mais fácil de interpretar:</p>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>19 variáveis:</strong>
+                <p>"A espécie depende de uma combinação complexa de BIO1, BIO2, BIO3, BIO4, BIO5..."</p>
+                <p>Difícil de explicar e publicar!</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>4-6 variáveis:</strong>
+                <p>"A espécie é limitada principalmente pela temperatura mínima no inverno e pela precipitação no período seco."</p>
+                <p>Claro e ecologicamente interpretável!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: MULTICOLINEARIDADE -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>O problema da multicolinearidade</h2>
+          <p>O principal motivo técnico para selecionar variáveis:</p>
+          <div class="box">
+            <strong>Multicolinearidade</strong> ocorre quando duas ou mais variáveis preditoras são <span class="highlight">altamente correlacionadas</span> entre si.
+          </div>
+        </section>
+
+        <section>
+          <h3>O que é correlação?</h3>
+          <p>A <span class="highlight">correlação</span> mede o quanto duas variáveis "andam juntas":</p>
+          <table>
+            <tr>
+              <th>Correlação (r)</th>
+              <th>Significado</th>
+              <th>Exemplo</th>
+            </tr>
+            <tr>
+              <td><strong>+1.0</strong></td>
+              <td>Perfeitamente positiva</td>
+              <td>Quando uma sobe, a outra sempre sobe</td>
+            </tr>
+            <tr>
+              <td><strong>+0.8</strong></td>
+              <td>Forte positiva</td>
+              <td>BIO1 vs. BIO10 (temperaturas médias)</td>
+            </tr>
+            <tr>
+              <td><strong>0.0</strong></td>
+              <td>Sem correlação</td>
+              <td>Variáveis independentes</td>
+            </tr>
+            <tr>
+              <td><strong>-0.8</strong></td>
+              <td>Forte negativa</td>
+              <td>BIO4 vs. BIO3 (sazonalidade vs. isotermalidade)</td>
+            </tr>
+            <tr>
+              <td><strong>-1.0</strong></td>
+              <td>Perfeitamente negativa</td>
+              <td>Quando uma sobe, a outra sempre desce</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Por que a multicolinearidade é um problema?</h3>
+          <div class="box-warning">
+            Se incluímos duas variáveis altamente correlacionadas (ex: |r| > 0.7), o modelo <strong>não consegue distinguir</strong> qual delas é realmente importante.
+          </div>
+          <ul>
+            <li>A <strong>importância das variáveis</strong> fica distorcida (dividida entre as correlacionadas)</li>
+            <li>O modelo pode atribuir peso a uma variável <strong>por acaso</strong>, não por relevância ecológica</li>
+            <li>Projeções futuras ficam instáveis: pequenas mudanças nos dados geram resultados muito diferentes</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Exemplo concreto</h3>
+          <p>Veja os dados de 5 localidades no Sul do Brasil:</p>
+          <table>
+            <tr>
+              <th>Local</th>
+              <th>BIO1 (Temp. média anual)</th>
+              <th>BIO10 (Temp. trim. quente)</th>
+            </tr>
+            <tr>
+              <td>Lages - SC</td>
+              <td>15.2 °C</td>
+              <td>19.8 °C</td>
+            </tr>
+            <tr>
+              <td>Curitiba - PR</td>
+              <td>16.5 °C</td>
+              <td>20.9 °C</td>
+            </tr>
+            <tr>
+              <td>Florianópolis - SC</td>
+              <td>20.1 °C</td>
+              <td>24.5 °C</td>
+            </tr>
+            <tr>
+              <td>Londrina - PR</td>
+              <td>21.0 °C</td>
+              <td>25.2 °C</td>
+            </tr>
+            <tr>
+              <td>Foz do Iguaçu - PR</td>
+              <td>21.8 °C</td>
+              <td>26.0 °C</td>
+            </tr>
+          </table>
+          <div class="box" style="margin-top: 10px;">
+            <strong>Perceba o padrão:</strong> quando BIO1 sobe, BIO10 <span class="highlight">sempre sobe junto</span>. A diferença entre elas é quase constante (~4-5 °C). Sabendo uma, já sabemos a outra. Usar as duas no modelo é redundante!
+          </div>
+          <p class="small">Correlação entre elas: r = 0.95. Devemos manter apenas uma.</p>
+        </section>
+
+        <section>
+          <h3>Regra prática</h3>
+          <div class="box">
+            <strong>Limiar comum:</strong> remover uma de cada par de variáveis com correlação |r| > <span class="highlight">0.7</span>
+          </div>
+          <p>Qual das duas remover? Critérios:</p>
+          <ul>
+            <li><strong>Relevância ecológica:</strong> manter a que faz mais sentido biológico para a espécie</li>
+            <li><strong>Importância no modelo:</strong> manter a que o modelo considera mais importante</li>
+            <li><strong>Generalidade:</strong> preferir variáveis mais gerais (BIO1) às derivadas (BIO10)</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: MÉTODOS DE SELEÇÃO -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Métodos de seleção de variáveis</h2>
+          <p>Como decidir quais variáveis manter?</p>
+        </section>
+
+        <section>
+          <h3>1. Matriz de correlação</h3>
+          <p>Calcular a correlação entre <strong>todos os pares</strong> de variáveis:</p>
+          <div class="diagram">
+       BIO1   BIO2   BIO4   BIO12  BIO14
+BIO1  [ 1.00  -0.32   0.45  -0.15   0.28]
+BIO2  [-0.32   1.00   0.78   0.10  -0.05]
+BIO4  [ 0.45   0.78   1.00  -0.20   0.12]
+BIO12 [-0.15   0.10  -0.20   1.00   0.85]
+BIO14 [ 0.28  -0.05   0.12   0.85   1.00]
+          </div>
+          <p>Identificar pares com |r| > 0.7: <strong>BIO2-BIO4</strong> (0.78) e <strong>BIO12-BIO14</strong> (0.85).</p>
+          <p class="small">Para cada par altamente correlacionado, remover uma das variáveis.</p>
+        </section>
+
+        <section>
+          <h3>2. VIF (Variance Inflation Factor)</h3>
+          <div class="box">
+            O <strong>VIF</strong> mede o quanto cada variável é explicada pelas outras. Quanto maior o VIF, maior a redundância.
+          </div>
+          <table>
+            <tr>
+              <th>VIF</th>
+              <th>Interpretação</th>
+              <th>Ação</th>
+            </tr>
+            <tr>
+              <td><strong>1</strong></td>
+              <td>Sem colinearidade</td>
+              <td>Manter</td>
+            </tr>
+            <tr>
+              <td><strong>1 - 5</strong></td>
+              <td>Colinearidade moderada</td>
+              <td>Aceitável</td>
+            </tr>
+            <tr>
+              <td><strong>> 5</strong></td>
+              <td>Colinearidade alta</td>
+              <td>Remover</td>
+            </tr>
+            <tr>
+              <td><strong>> 10</strong></td>
+              <td>Colinearidade muito alta</td>
+              <td>Remover com certeza</td>
+            </tr>
+          </table>
+          <p class="small">Processo iterativo: calcular VIF, remover a variável com maior VIF, recalcular, repetir até todas terem VIF &lt; 5. No TAIPA, o threshold padrão é <strong>VIF = 5</strong>.</p>
+        </section>
+
+        <section>
+          <h3>3. Importância do modelo (Random Forest)</h3>
+          <p>O Random Forest calcula a <span class="highlight">importância de cada variável</span> automaticamente:</p>
+          <div class="box">
+            <ul>
+              <li>Treinar o modelo com todas as variáveis</li>
+              <li>Verificar quais variáveis mais contribuem para as decisões das árvores</li>
+              <li>Remover as variáveis com <strong>baixa importância</strong></li>
+            </ul>
+          </div>
+          <p>Este método é complementar: primeiro remover colinearidade (correlação/VIF), depois usar a importância para refinar.</p>
+        </section>
+
+        <section>
+          <h3>Fluxo recomendado de seleção</h3>
+          <div class="diagram">
+19 variáveis bioclimáticas (BIO1 a BIO19)
+              |
+    [1] Remover por correlação (|r| > 0.7)
+              |
+    ~8-10 variáveis restantes
+              |
+    [2] Verificar VIF (remover VIF > 5)
+              |
+    ~5-8 variáveis restantes
+              |
+    [3] Treinar modelo e verificar importância
+              |
+    4-6 variáveis finais (conjunto otimizado)
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: QUAIS VARIÁVEIS PARA ESPÉCIES FLORESTAIS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Variáveis-chave para espécies florestais</h2>
+          <p>Na prática, algumas variáveis são frequentemente <span class="highlight">mais relevantes</span> para espécies florestais no Brasil:</p>
+        </section>
+
+        <section>
+          <h3>Variáveis frequentemente importantes</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Temperatura:</strong>
+                <ul>
+                  <li><strong>BIO1</strong> - Temp. média anual</li>
+                  <li><strong>BIO4</strong> - Sazonalidade da temp.</li>
+                  <li><strong>BIO6</strong> - Temp. mínima do mês mais frio</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Precipitação:</strong>
+                <ul>
+                  <li><strong>BIO12</strong> - Precipitação anual</li>
+                  <li><strong>BIO14</strong> - Precip. do mês mais seco</li>
+                  <li><strong>BIO15</strong> - Sazonalidade da precip.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="small">Isso NÃO significa que você deve usar sempre essas! Cada espécie tem suas particularidades.</p>
+        </section>
+
+        <section>
+          <h3>Exemplos práticos</h3>
+          <table>
+            <tr>
+              <th>Espécie</th>
+              <th>Variáveis-chave</th>
+              <th>Por quê?</th>
+            </tr>
+            <tr>
+              <td><em>Araucaria angustifolia</em></td>
+              <td>BIO6, BIO4, BIO12</td>
+              <td>Precisa de frio no inverno e chuva bem distribuída</td>
+            </tr>
+            <tr>
+              <td><em>Euterpe edulis</em></td>
+              <td>BIO14, BIO1, BIO15</td>
+              <td>Sensível à seca, precisa de umidade constante</td>
+            </tr>
+            <tr>
+              <td><em>Handroanthus albus</em></td>
+              <td>BIO1, BIO12, BIO4</td>
+              <td>Distribuição ampla, limitada por temperatura e chuva geral</td>
+            </tr>
+          </table>
+          <div class="box-blue" style="margin-top: 8px;">
+            <strong>Dica:</strong> ao interpretar os resultados, pergunte-se: "faz sentido ecológico que essa variável seja importante para minha espécie?"
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: CENÁRIOS FUTUROS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Variáveis bioclimáticas e mudanças climáticas</h2>
+          <p>A seleção de variáveis também é importante para <span class="highlight">projeções futuras</span>:</p>
+        </section>
+
+        <section>
+          <h3>SSPs: cenários de emissões</h3>
+          <div class="box">
+            <strong>SSPs</strong> (Shared Socioeconomic Pathways) são cenários que projetam como o clima será no futuro, dependendo das ações humanas.
+          </div>
+          <table>
+            <tr>
+              <th>Cenário</th>
+              <th>Descrição</th>
+              <th>Aquecimento até 2100</th>
+            </tr>
+            <tr>
+              <td><strong>SSP1-2.6</strong></td>
+              <td>Sustentável, baixas emissões</td>
+              <td>~1.8 °C</td>
+            </tr>
+            <tr>
+              <td><strong>SSP2-4.5</strong></td>
+              <td>Intermediário</td>
+              <td>~2.7 °C</td>
+            </tr>
+            <tr>
+              <td><strong>SSP3-7.0</strong></td>
+              <td>Alta rivalidade regional</td>
+              <td>~3.6 °C</td>
+            </tr>
+            <tr>
+              <td><strong>SSP5-8.5</strong></td>
+              <td>Alta emissão, sem mitigação</td>
+              <td>~4.4 °C</td>
+            </tr>
+          </table>
+          <p class="small">Para cada cenário, as 19 variáveis bioclimáticas são recalculadas com os valores projetados de temperatura e precipitação.</p>
+        </section>
+
+        <section>
+          <h3>Por que isso importa para a seleção?</h3>
+          <div class="box-warning">
+            <strong>Atenção:</strong> variáveis que são estáveis hoje podem mudar drasticamente no futuro, e vice-versa.
+          </div>
+          <ul>
+            <li>O modelo treinado com dados <strong>atuais</strong> será aplicado a mapas <strong>futuros</strong></li>
+            <li>Usar variáveis com sentido ecológico claro torna a projeção mais <strong>confiável</strong></li>
+            <li>Variáveis selecionadas por pura correlação estatística podem gerar projeções <strong>irreais</strong></li>
+          </ul>
+          <div class="box" style="margin-top: 8px;">
+            <strong>No TAIPA:</strong> após treinar o modelo com dados atuais, você poderá projetá-lo para cenários futuros usando as mesmas variáveis selecionadas.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 12: PRÁTICA NO TAIPA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <p>Agora vamos aplicar o que aprendemos!</p>
+          <div class="box center">
+            <strong>Etapa 3 do TAIPA:</strong> Análise de Variáveis Bioclimáticas
+          </div>
+        </section>
+
+        <section>
+          <h3>Passo a passo no TAIPA</h3>
+          <ol style="list-style: none; padding: 0; margin: 0;">
+            <li style="margin-bottom: 10px;"><span class="step-number">1</span> <strong>Verificar</strong> que as etapas anteriores estão completas (ocorrências + pseudo-ausências)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">2</span> <strong>Avançar</strong> para a etapa "Análise Bioclimática" (as 19 variáveis já vêm selecionadas)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">3</span> <strong>Definir os parâmetros:</strong> threshold de VIF (padrão: 5) e de correlação (padrão: 0.7)</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">4</span> <strong>Clicar "Extrair Valores Bioclimáticos"</strong> - o TAIPA consulta os mapas WorldClim para cada ponto</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">5</span> <strong>Analisar</strong> a matriz de correlação e o gráfico de VIF gerados automaticamente</li>
+            <li style="margin-bottom: 10px;"><span class="step-number">6</span> <strong>Usar a seleção automática</strong> (Método Robusto recomendado) para obter o conjunto final de variáveis</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>O que o TAIPA faz automaticamente</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Extração:</strong>
+                <ul>
+                  <li>Consulta os rasters WorldClim</li>
+                  <li>Extrai os valores de BIO1-BIO19 para cada ponto de presença e pseudo-ausência</li>
+                  <li>Monta a tabela de dados completa</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Seleção (Método Robusto):</strong>
+                <ul>
+                  <li>Calcula correlação entre todas as variáveis</li>
+                  <li>Remove redundâncias (|r| > 0.7)</li>
+                  <li>Calcula VIF e elimina colineares (VIF > 5)</li>
+                  <li>Retorna o conjunto final otimizado</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>O que observar nos resultados</h3>
+          <ul>
+            <li>Na <strong>matriz de correlação</strong>: quais variáveis formam blocos de alta correlação?</li>
+            <li>No <strong>gráfico de VIF</strong>: quais variáveis ultrapassam o limiar de 5?</li>
+            <li>As variáveis selecionadas cobrem tanto <strong>temperatura</strong> quanto <strong>precipitação</strong>?</li>
+            <li>As variáveis fazem <strong>sentido ecológico</strong> para sua espécie?</li>
+          </ul>
+          <div class="box-blue" style="margin-top: 8px;">
+            <strong>Dica:</strong> use a opção "Visualizar Layer" para ver o mapa de cada variável com seus pontos sobrepostos. Isso ajuda a entender visualmente o que cada variável representa na sua área de estudo.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 13: RESUMO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>O que aprendemos hoje</h2>
+        <ul>
+          <li><strong>Variáveis bioclimáticas</strong> são resumos do clima com significado biológico (BIO1 a BIO19)</li>
+          <li>Os dados vêm de bases como <strong>WorldClim</strong> e <strong>CHELSA</strong> (o TAIPA usa WorldClim)</li>
+          <li>O TAIPA <strong>extrai os valores</strong> das variáveis para cada ponto de presença e pseudo-ausência</li>
+          <li><strong>Não devemos usar todas</strong> as 19 variáveis: redundância, overfitting e interpretabilidade</li>
+          <li><strong>Multicolinearidade</strong> distorce a importância das variáveis no modelo</li>
+          <li>Usamos <strong>correlação</strong> e <strong>VIF</strong> para selecionar 4-6 variáveis informativas e independentes</li>
+          <li>As variáveis selecionadas devem fazer <strong>sentido ecológico</strong> para a espécie</li>
+        </ul>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 14: PRÓXIMA AULA -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Próxima aula</h2>
+        <div class="box">
+          <strong>Aula 5:</strong> Treinamento do modelo e avaliação - como treinar o Random Forest com os dados preparados e avaliar se o modelo é confiável.
+        </div>
+        <p>Até lá, deixem o TAIPA com as variáveis bioclimáticas selecionadas para a espécie escolhida.</p>
+        <br>
+        <div class="box center" style="font-size: 1.2em;">
+          Dúvidas?
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: false,
+      hash: true,
+      transition: 'slide',
+      slideNumber: true,
+      plugins: [ ]
+    });
+  </script>
+</body>
+</html>
