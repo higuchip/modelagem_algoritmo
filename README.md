@@ -10,6 +10,7 @@ Este repositório contém as apresentações de slides da disciplina de Mudança
 | 2 | Dados de Ocorrência - GBIF | [Acessar](https://higuchip.github.io/modelagem_algoritmo/aula02_ocorrencias/) |
 | 3 | Pseudo-ausências | [Acessar](https://higuchip.github.io/modelagem_algoritmo/aula03_pseudoausencias/) |
 | 4 | Análise Bioclimática | [Acessar](https://higuchip.github.io/modelagem_algoritmo/aula04_bioclimatica/) |
+| 5 | Modelagem com Random Forest | [Acessar](https://higuchip.github.io/modelagem_algoritmo/aula05_modelagem/) |
 
 ## Conteúdo
 
@@ -17,6 +18,7 @@ Este repositório contém as apresentações de slides da disciplina de Mudança
 - **Aula 2:** Dados de ocorrência de espécies, GBIF, qualidade dos dados e viés amostral
 - **Aula 3:** Pseudo-ausências, estratégia de buffer, parâmetros e prática no TAIPA
 - **Aula 4:** Variáveis bioclimáticas, WorldClim, multicolinearidade, seleção por correlação e VIF, prática no TAIPA
+- **Aula 5:** Modelagem com Random Forest, validação cruzada espacial, métricas de avaliação (AUC, TSS), interpretação do modelo e prática no TAIPA
 
 ## Como visualizar
 

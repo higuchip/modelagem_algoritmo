@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Modelagem com Random Forest - SDM</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+  <style>
+    :root {
+      --main-color: #2c7a3f;
+      --accent-color: #1a5c2e;
+      --text-color: #333;
+      --background-color: #fff;
+      --box-bg-color: rgba(44, 122, 63, 0.08);
+      --warning-color: #d35400;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      text-transform: none;
+      color: var(--main-color);
+      margin-bottom: 0.5em;
+      font-weight: 600;
+    }
+
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.4em; margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.1em; margin-bottom: 0.3em; }
+
+    .reveal p, .reveal li {
+      font-size: 0.78em;
+      line-height: 1.4;
+    }
+
+    .reveal .small { font-size: 0.6em; }
+    .reveal .center { text-align: center; }
+
+    .reveal .highlight {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .reveal .box {
+      border: 1px solid var(--main-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: var(--box-bg-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .reveal .box-warning {
+      border: 1px solid var(--warning-color);
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(211, 84, 0, 0.08);
+    }
+
+    .reveal .box-blue {
+      border: 1px solid #2980b9;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background-color: rgba(41, 128, 185, 0.08);
+    }
+
+    .reveal .columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .reveal .column {
+      flex: 1;
+    }
+
+    .reveal img {
+      border: none !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+      background: none !important;
+      border-radius: 8px;
+    }
+
+    .reveal .cite {
+      font-size: 0.6em;
+      font-style: italic;
+      text-align: right;
+      margin-top: 20px;
+      color: #777;
+    }
+
+    .reveal ol, .reveal ul {
+      margin-left: 0.8em;
+    }
+
+    .reveal li {
+      margin-bottom: 0.25em;
+    }
+
+    .reveal .slides section {
+      padding: 10px 40px;
+    }
+
+    .reveal .emoji {
+      font-size: 1.2em;
+      margin-right: 5px;
+    }
+
+    .reveal .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: var(--main-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 0.8em;
+      margin-right: 8px;
+    }
+
+    .reveal .controls {
+      opacity: 0.6;
+    }
+
+    .reveal .progress {
+      height: 5px;
+      color: var(--main-color);
+    }
+
+    .reveal table {
+      font-size: 0.7em;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .reveal table th {
+      background-color: var(--main-color);
+      color: white;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .reveal table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .reveal table tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+
+    .reveal .code-example {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.4;
+      font-size: 0.65em;
+      background-color: #f0f7f0;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #cde6cd;
+    }
+
+    .reveal .diagram {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.3;
+      font-size: 0.55em;
+      background-color: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: CAPA -->
+      <!-- ============================================ -->
+      <section>
+        <h1>Modelagem com Random Forest</h1>
+        <h3>Treinando e avaliando o modelo<br>de distribuição de espécies</h3>
+        <br>
+        <p>Aula 5 | Mudanças Climáticas</p>
+        <p>Engenharia Florestal - UDESC</p>
+        <p class="small">Prof. Pedro Higuchi</p>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: RECAPITULAÇÃO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>O que vimos até agora</h2>
+        <ul>
+          <li><strong>Aula 1:</strong> Modelos, algoritmos e o conceito de Random Forest (equipe de detetives)</li>
+          <li><strong>Aula 2:</strong> Dados de ocorrência do GBIF — onde a espécie <span class="highlight">foi encontrada</span></li>
+          <li><strong>Aula 3:</strong> Pseudo-ausências — onde a espécie <span class="highlight">provavelmente não está</span></li>
+          <li><strong>Aula 4:</strong> Variáveis bioclimáticas selecionadas (correlação + VIF)</li>
+        </ul>
+        <div class="box">
+          <strong>Hoje:</strong> vamos <span class="highlight">treinar</span> o Random Forest com esses dados e aprender a <span class="highlight">avaliar</span> se o modelo é confiável.
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: ROTEIRO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Roteiro da Aula</h2>
+        <ol>
+          <li>Preparação dos dados para modelagem</li>
+          <li>Divisão treino-teste</li>
+          <li>Random Forest: hiperparâmetros</li>
+          <li>Validação cruzada</li>
+          <li>Validação cruzada <strong>espacial</strong></li>
+          <li>Métricas de avaliação</li>
+          <li>Interpretação do modelo</li>
+          <li>Overfitting vs. Underfitting</li>
+          <li>Prática no TAIPA</li>
+        </ol>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: PIPELINE -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Onde estamos no pipeline?</h2>
+        <p>O TAIPA guia vocês por 6 etapas. Já completamos as 3 primeiras:</p>
+        <div style="font-size: 0.78em;">
+          <p style="color: #999;"><span class="step-number" style="background: #999;">1</span> Buscar espécie no GBIF ✓</p>
+          <p style="color: #999;"><span class="step-number" style="background: #999;">2</span> Gerar pseudo-ausências ✓</p>
+          <p style="color: #999;"><span class="step-number" style="background: #999;">3</span> Selecionar variáveis bioclimáticas ✓</p>
+          <p><span class="step-number">4</span> <strong>Treinar e avaliar o modelo ← HOJE</strong></p>
+          <p style="color: #bbb;"><span class="step-number" style="background: #bbb;">5</span> Projeção espacial (mapa atual)</p>
+          <p style="color: #bbb;"><span class="step-number" style="background: #bbb;">6</span> Projeção futura (cenários climáticos)</p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: PREPARAÇÃO DOS DADOS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Preparação dos Dados</h2>
+          <h3>Montando o conjunto de dados</h3>
+          <p>Precisamos juntar tudo que preparamos nas aulas anteriores em uma <strong>tabela única</strong> para o modelo aprender.</p>
+          <div class="diagram">
+Presenças (GBIF)         →  label = 1 (presente)
+  + variáveis bioclimáticas
+                                                    →  TABELA FINAL
+Pseudo-ausências (buffer)  →  label = 0 (ausente)       X + y
+  + variáveis bioclimáticas
+          </div>
+          <p>O modelo recebe duas coisas:</p>
+          <ul>
+            <li><strong>X (features):</strong> matriz com as variáveis bioclimáticas de cada ponto</li>
+            <li><strong>y (labels):</strong> vetor com 1 (presença) ou 0 (ausência)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Preparação dos Dados</h2>
+          <h3>Exemplo: como fica a tabela</h3>
+          <table>
+            <thead>
+              <tr><th>Ponto</th><th>BIO1 (Temp.)</th><th>BIO4 (Sazon.)</th><th>BIO12 (Precip.)</th><th>y</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>18.2 °C</td><td>4200</td><td>1450 mm</td><td><strong>1</strong> (presença)</td></tr>
+              <tr><td>2</td><td>22.1 °C</td><td>3800</td><td>980 mm</td><td><strong>0</strong> (ausência)</td></tr>
+              <tr><td>3</td><td>16.8 °C</td><td>4500</td><td>1680 mm</td><td><strong>1</strong> (presença)</td></tr>
+              <tr><td>4</td><td>25.3 °C</td><td>2900</td><td>750 mm</td><td><strong>0</strong> (ausência)</td></tr>
+              <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+            </tbody>
+          </table>
+          <p>Cada linha = um ponto geográfico com suas condições climáticas e se a espécie está presente ou não.</p>
+        </section>
+
+        <section>
+          <h2>Preparação dos Dados</h2>
+          <h3>No TAIPA</h3>
+          <div class="box-blue">
+            <strong>O TAIPA monta essa tabela automaticamente!</strong><br>
+            Na aba "Preparação de Dados", você vê:<br>
+            - Número de pontos de presença<br>
+            - Número de pseudo-ausências<br>
+            - Variáveis bioclimáticas selecionadas (da aula anterior)<br>
+            - Opção de ajustar quais variáveis incluir
+          </div>
+          <div class="box-warning">
+            <strong>Atenção:</strong> Se as variáveis tiverem muitos valores faltantes (NaN), o modelo pode não funcionar bem. O TAIPA avisa quando há problemas nos dados.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: DIVISÃO TREINO-TESTE -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Divisão Treino-Teste</h2>
+          <h3>Por que dividir os dados?</h3>
+          <div class="box">
+            Não podemos avaliar o modelo com os mesmos dados que ele usou para aprender. Seria como o professor <strong>aplicar a prova com as respostas escritas no quadro</strong>!
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Dados de Treino</strong><br>
+                O modelo <span class="highlight">aprende</span> os padrões climáticos
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Dados de Teste</strong><br>
+                Avaliamos se o modelo <span class="highlight">realmente aprendeu</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Divisão Treino-Teste</h2>
+          <h3>Como dividir: 80/20</h3>
+          <div class="diagram">
+  Todos os dados (100%)
+  ┌──────────────────────────────────────┬──────────┐
+  │          TREINO (80%)                │TESTE(20%)│
+  │                                      │          │
+  │   O modelo aprende com esses dados   │ Avalia   │
+  └──────────────────────────────────────┴──────────┘
+          </div>
+          <div class="box-warning">
+            <strong>Regra fundamental:</strong> O modelo <strong>NUNCA</strong> vê os dados de teste durante o treinamento!
+          </div>
+          <div class="box-blue">
+            <strong>No TAIPA:</strong> O slider "Proporção de Teste" controla essa divisão (padrão: 20%).
+          </div>
+        </section>
+
+        <section>
+          <h2>Divisão Treino-Teste</h2>
+          <h3>Estratificação</h3>
+          <p>A proporção de presenças e ausências deve ser <strong>mantida</strong> em ambos os conjuntos:</p>
+          <div class="diagram">
+  200 pontos totais (100 presenças + 100 ausências)
+
+  Treino (80%): 160 pontos  →  80 presenças + 80 ausências  ✓
+  Teste  (20%):  40 pontos  →  20 presenças + 20 ausências  ✓
+          </div>
+          <div class="box">
+            <strong>Estratificação</strong> garante que o treino e o teste tenham a mesma proporção de classes. Sem isso, o teste poderia ter só ausências — e a avaliação seria inútil.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: RANDOM FOREST - HIPERPARÂMETROS -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Random Forest: Hiperparâmetros</h2>
+          <h3>Relembrando</h3>
+          <p>Na Aula 1, vimos que Random Forest é uma <strong>equipe de detetives</strong> — muitas árvores de decisão votando juntas.</p>
+          <div class="box">
+            Agora vamos entender os <strong>"botões de ajuste"</strong> (hiperparâmetros) que controlam como o modelo aprende.
+          </div>
+          <p>Hiperparâmetros são configurações que <strong>nós definimos antes</strong> do treinamento. O modelo não os aprende sozinho.</p>
+        </section>
+
+        <section>
+          <h2>Random Forest: Hiperparâmetros</h2>
+          <h3>Os 4 principais</h3>
+          <table>
+            <thead>
+              <tr><th>Hiperparâmetro</th><th>O que controla</th><th>Analogia</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>N. de Árvores</strong></td>
+                <td>Quantas árvores de decisão</td>
+                <td>Quantos detetives na equipe</td>
+              </tr>
+              <tr>
+                <td><strong>Profundidade Máx.</strong></td>
+                <td>Quantas perguntas cada árvore faz</td>
+                <td>Quantas perguntas cada detetive pode fazer</td>
+              </tr>
+              <tr>
+                <td><strong>Amostras Mín. Split</strong></td>
+                <td>Mínimo de dados para dividir um nó</td>
+                <td>Mínimo de evidências para abrir investigação</td>
+              </tr>
+              <tr>
+                <td><strong>Amostras Mín. Folha</strong></td>
+                <td>Mínimo de dados no nó final</td>
+                <td>Mínimo de casos para dar veredito</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Random Forest: Hiperparâmetros</h2>
+          <h3>Profundidade: raso vs. profundo</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Árvore rasa</strong> (max_depth = 5)<br>
+                Poucas perguntas, modelo simples<br>
+                <em>Risco: <span class="highlight">underfitting</span></em>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Árvore profunda</strong> (max_depth = 50)<br>
+                Muitas perguntas, modelo complexo<br>
+                <em>Risco: <span class="highlight">overfitting</span></em>
+              </div>
+            </div>
+          </div>
+          <div class="box">
+            O ideal está no <strong>meio-termo</strong>: profundidade suficiente para captar padrões reais, mas não tanta que decore ruído.
+          </div>
+        </section>
+
+        <section>
+          <h2>Random Forest: Hiperparâmetros</h2>
+          <h3>Valores recomendados para SDM</h3>
+          <table>
+            <thead>
+              <tr><th>Hiperparâmetro</th><th>Range típico</th><th>Padrão no TAIPA</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Número de Árvores</td><td>300 - 1000</td><td><strong>500</strong></td></tr>
+              <tr><td>Profundidade Máxima</td><td>10 - 30</td><td><strong>20</strong></td></tr>
+              <tr><td>Amostras Mín. para Split</td><td>5 - 10</td><td><strong>5</strong></td></tr>
+              <tr><td>Amostras Mín. por Folha</td><td>1 - 3</td><td><strong>2</strong></td></tr>
+            </tbody>
+          </table>
+          <div class="box-blue">
+            <strong>No TAIPA:</strong> Esses valores já vêm pré-configurados no menu lateral! Para a maioria dos casos, os padrões funcionam bem.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: VALIDAÇÃO CRUZADA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Validação Cruzada</h2>
+          <h3>O problema do split único</h3>
+          <div class="box-warning">
+            Um único split 80/20 pode dar <strong>sorte ou azar</strong>. E se os 20% de teste forem pontos "fáceis"? Ou "difíceis"?
+          </div>
+          <p><strong>Analogia:</strong> Avaliar um aluno com <strong>uma única prova</strong> vs. várias provas ao longo do semestre.</p>
+          <ul>
+            <li>Uma prova: nota pode não refletir o conhecimento real</li>
+            <li>Várias provas: média das notas é mais confiável</li>
+          </ul>
+          <div class="box">
+            <strong>Validação cruzada</strong> é como aplicar várias provas — cada uma com perguntas diferentes.
+          </div>
+        </section>
+
+        <section>
+          <h2>Validação Cruzada</h2>
+          <h3>K-Fold Cross-Validation</h3>
+          <p>Dividimos os dados em <strong>K partes iguais</strong> (folds). Cada parte é usada como teste exatamente <strong>uma vez</strong>:</p>
+          <div class="diagram">
+Fold 1:  [TESTE]  [treino] [treino] [treino] [treino]
+Fold 2:  [treino] [TESTE]  [treino] [treino] [treino]
+Fold 3:  [treino] [treino] [TESTE]  [treino] [treino]
+Fold 4:  [treino] [treino] [treino] [TESTE]  [treino]
+Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
+
+         Resultado final = média das 5 avaliações
+          </div>
+          <p>Com K=5, o modelo é treinado e avaliado <strong>5 vezes</strong>, cada vez com dados de teste diferentes.</p>
+        </section>
+
+        <section>
+          <h2>Validação Cruzada</h2>
+          <h3>Vantagens do K-Fold</h3>
+          <ul>
+            <li><strong>Todos os dados</strong> são usados para treino E para teste</li>
+            <li>Resultado <strong>mais robusto</strong> (média de K avaliações em vez de 1)</li>
+            <li>Detecta melhor se o modelo está <strong>generalizando</strong></li>
+            <li>Mostra a <strong>variabilidade</strong> do desempenho (desvio padrão entre folds)</li>
+          </ul>
+          <div class="box">
+            <strong>K = 5</strong> é o valor mais comum. Significa 5 rodadas de treino/teste com partes diferentes.
+          </div>
+          <div class="box-blue">
+            <strong>No TAIPA:</strong> A validação cruzada vem <strong>ativada por padrão</strong>. O slider "Número de Folds" permite ajustar (padrão: 5).
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: VALIDAÇÃO CRUZADA ESPACIAL -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Validação Cruzada Espacial</h2>
+          <h3>O problema da autocorrelação espacial</h3>
+          <div class="box">
+            <strong>Autocorrelação espacial:</strong> pontos próximos no espaço tendem a ter condições ambientais similares.
+          </div>
+          <p>Se um ponto de treino está <strong>muito perto</strong> de um ponto de teste, o modelo pode "colar" da vizinhança em vez de aprender relações climáticas reais.</p>
+          <div class="diagram">
+  Ponto de treino (A)  ←  5 km  →  Ponto de teste (B)
+
+  A e B têm clima quase idêntico!
+  O modelo acerta B sem ter aprendido nada...
+  apenas porque A estava ao lado.
+          </div>
+        </section>
+
+        <section>
+          <h2>Validação Cruzada Espacial</h2>
+          <h3>Analogia: prova com cola vs. prova real</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>CV padrão em SDM</strong><br><br>
+                Como fazer prova sentado <strong>ao lado de quem já sabe</strong> as respostas.<br><br>
+                Nota alta, mas não aprendeu nada!
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>CV espacial</strong><br><br>
+                Como fazer prova em <strong>sala separada</strong>, sem consulta.<br><br>
+                Nota mais realista — mostra o que realmente aprendeu.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Validação Cruzada Espacial</h2>
+          <h3>Como funciona na prática</h3>
+          <div class="diagram">
+  Passo 1: Agrupar pontos por localização geográfica (KMeans)
+
+  ┌───────────┐   ┌───────────┐   ┌───────────┐
+  │  Grupo 1  │   │  Grupo 2  │   │  Grupo 3  │
+  │  (Norte)  │   │ (Centro)  │   │   (Sul)   │
+  │   * * *   │   │   * * *   │   │   * * *   │
+  └───────────┘   └───────────┘   └───────────┘
+       ↕ buffer        ↕ buffer
+
+  Passo 2: Cada grupo vira conjunto de teste
+  Passo 3: Buffer remove pontos de treino próximos à fronteira
+          </div>
+          <p>Resultado: métricas refletem a capacidade real de prever em <strong>áreas novas</strong>.</p>
+        </section>
+
+        <section>
+          <h2>Validação Cruzada Espacial</h2>
+          <h3>Por que é ESSENCIAL para SDM</h3>
+          <div class="box-warning">
+            Validação padrão pode dar AUC de <strong>0.95</strong> quando a capacidade real é <strong>0.75</strong>!
+          </div>
+          <ul>
+            <li>Dados ecológicos <strong>sempre</strong> têm autocorrelação espacial</li>
+            <li>O objetivo do SDM é prever em <strong>novas áreas</strong></li>
+            <li>Métricas infladas levam a <strong>decisões erradas</strong> de conservação</li>
+          </ul>
+          <div class="box">
+            <strong>Regra de ouro:</strong> SEMPRE use validação cruzada espacial para SDM.<br>
+            <span class="small">No TAIPA: selecione "Espacial (Recomendada para SDM)". Buffer padrão: 10 km.</span>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: MÉTRICAS DE AVALIAÇÃO -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>Matriz de confusão</h3>
+          <p>A base de todas as métricas. Compara o que o modelo <strong>previu</strong> com a <strong>realidade</strong>:</p>
+          <div class="diagram">
+                          PREDITO pelo modelo
+                       Presente     Ausente
+              ┌──────────────┬──────────────┐
+   Presente   │      TP      │      FN      │
+   REAL       │  (acertou    │   (perdeu    │
+              │   presença)  │   presença)  │
+              ├──────────────┼──────────────┤
+   Ausente    │      FP      │      TN      │
+              │  (falso      │  (acertou    │
+              │   alarme)    │   ausência)  │
+              └──────────────┴──────────────┘
+          </div>
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>Analogia: detector de incêndio florestal</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>TP</strong> — Alarme toca e tinha incêndio<br>
+                <em>Salvou a floresta!</em>
+              </div>
+              <div class="box-warning">
+                <strong>FN</strong> — NÃO tocou e tinha incêndio<br>
+                <em>PERIGOSO! Floresta queima!</em>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box" style="border-color: #999;">
+                <strong>FP</strong> — Alarme toca sem incêndio<br>
+                <em>Equipe vai à toa, mas sem dano</em>
+              </div>
+              <div class="box">
+                <strong>TN</strong> — Não tocou e não tinha incêndio<br>
+                <em>Tudo certo!</em>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>Métricas derivadas da matriz</h3>
+          <table>
+            <thead>
+              <tr><th>Métrica</th><th>Fórmula simplificada</th><th>Pergunta que responde</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Acurácia</strong></td>
+                <td>(TP + TN) / Total</td>
+                <td>No geral, quantas vezes acertei?</td>
+              </tr>
+              <tr>
+                <td><strong>Precisão</strong></td>
+                <td>TP / (TP + FP)</td>
+                <td>Quando disse "presente", estava certo?</td>
+              </tr>
+              <tr>
+                <td><strong>Sensibilidade</strong></td>
+                <td>TP / (TP + FN)</td>
+                <td>Das presenças reais, quantas encontrei?</td>
+              </tr>
+              <tr>
+                <td><strong>F1-Score</strong></td>
+                <td>Média harmônica Prec/Sens</td>
+                <td>Equilíbrio entre precisão e sensibilidade</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="box">
+            Para SDM, <strong>Sensibilidade</strong> é especialmente importante — queremos minimizar FN e encontrar todas as áreas de ocorrência potencial.
+          </div>
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>AUC-ROC</h3>
+          <p>A <strong>AUC</strong> (Area Under the ROC Curve) mede a capacidade do modelo de distinguir entre presença e ausência em <strong>todos os limiares possíveis</strong>.</p>
+          <div class="diagram">
+  Escala de interpretação da AUC:
+
+  0.5        0.6        0.7        0.8        0.9        1.0
+   │──────────│──────────│──────────│──────────│──────────│
+   Aleatório    Fraco     Aceitável     Bom      Excelente
+  (moeda)
+          </div>
+          <div class="box">
+            <strong>AUC é a métrica mais usada</strong> em publicações de SDM. Independe do limiar de corte (threshold).
+          </div>
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>TSS (True Skill Statistic)</h3>
+          <div class="box">
+            <strong>TSS = Sensibilidade + Especificidade - 1</strong>
+          </div>
+          <div class="diagram">
+  -1.0       0.0        0.4        0.6        0.8        1.0
+   │──────────│──────────│──────────│──────────│──────────│
+  Pior que   Aleatório  Aceitável     Bom      Excelente  Perfeito
+  aleatório
+          </div>
+          <ul>
+            <li>Combina sensibilidade com especificidade (<strong>-1 a +1</strong>)</li>
+            <li><strong>Não depende da prevalência</strong> — recomendado para SDM</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: INTERPRETAÇÃO DO MODELO -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Interpretação do Modelo</h2>
+          <h3>Importância das variáveis</h3>
+          <p>O Random Forest calcula quanto cada variável contribui para as decisões corretas:</p>
+          <div class="diagram">
+  Exemplo de importância das variáveis:
+
+  BIO12 (Precipitação anual)     ████████████████████  35%
+  BIO6  (Temp. mín. mês frio)   ████████████████      28%
+  BIO4  (Sazonalidade temp.)     ██████████            18%
+  BIO15 (Sazonalidade precip.)   ██████                10%
+  BIO1  (Temp. média anual)      ████                   9%
+          </div>
+          <div class="box">
+            A importância das variáveis nos diz <strong>quais fatores climáticos</strong> mais influenciam a distribuição da espécie.
+          </div>
+        </section>
+
+        <section>
+          <h2>Interpretação do Modelo</h2>
+          <h3>Interpretação ecológica</h3>
+          <p>Conecte os números à ecologia da espécie:</p>
+          <table>
+            <thead>
+              <tr><th>Variável dominante</th><th>Interpretação ecológica</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>BIO12</strong> (Precip. anual)</td><td>Limitada por disponibilidade de água</td></tr>
+              <tr><td><strong>BIO6</strong> (Temp. mín. mês frio)</td><td>Sensível a geadas</td></tr>
+              <tr><td><strong>BIO4</strong> (Sazonalidade temp.)</td><td>Responde à variação climática anual</td></tr>
+            </tbody>
+          </table>
+          <div class="box-warning">
+            <strong>Atenção:</strong> Um bom modelo deve ter <strong>interpretação ecológica coerente</strong>. Se a variável mais importante não fizer sentido biológico, desconfie do modelo!
+          </div>
+        </section>
+
+        <section>
+          <h2>Interpretação do Modelo</h2>
+          <h3>Curvas de resposta</h3>
+          <p>Mostram como a <strong>probabilidade de presença</strong> varia com cada variável, mantendo as outras no valor médio:</p>
+          <div class="diagram">
+  Prob.  1.0 |          .---.
+  presenca   |        /       \
+         0.5 |      /           \
+             |    /               \
+         0.0 |--'                   '--
+             +----+----+----+----+----
+            10   15   20   25   30  °C
+          </div>
+          <p>Neste exemplo: a espécie prefere temperaturas entre <strong>15-25°C</strong>, com ótimo em ~20°C.</p>
+          <div class="box-blue">
+            <strong>No TAIPA:</strong> Na aba "Avaliação", selecione variáveis para visualizar curvas de resposta.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 12: OVERFITTING vs UNDERFITTING -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Overfitting vs. Underfitting</h2>
+          <h3>O dilema</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box-warning">
+                <strong>Underfitting</strong><br>(muito simples)<br><br>
+                Modelo <strong>não aprendeu</strong> o suficiente.<br>
+                Aluno que não estudou.
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Overfitting</strong><br>(muito complexo)<br><br>
+                Modelo <strong>decorou</strong> os dados.<br>
+                Aluno que decorou a prova anterior.
+              </div>
+            </div>
+          </div>
+          <div class="box">
+            O ideal: modelo que <strong>entendeu os padrões</strong> e consegue aplicar em situações novas (generalizar).
+          </div>
+        </section>
+
+        <section>
+          <h2>Overfitting vs. Underfitting</h2>
+          <h3>Como identificar</h3>
+          <table>
+            <thead>
+              <tr><th>Sinal</th><th>Underfitting</th><th>Overfitting</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Métricas no treino</td><td>Baixas</td><td>Muito altas (~1.0)</td></tr>
+              <tr><td>Métricas no teste</td><td>Baixas</td><td>Muito menores que treino</td></tr>
+              <tr><td>Diferença treino/teste</td><td>Pequena</td><td><strong>GRANDE</strong></td></tr>
+              <tr><td>Mapa de projeção</td><td>Uniforme demais</td><td>Fragmentado, "ruidoso"</td></tr>
+            </tbody>
+          </table>
+          <div class="box">
+            <strong>Sinal de alerta:</strong> Se a AUC no treino é 0.99 mas no teste é 0.65, o modelo está <strong>decorando</strong> os dados.
+          </div>
+        </section>
+
+        <section>
+          <h2>Overfitting vs. Underfitting</h2>
+          <h3>Como resolver</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Se underfitting:</strong><br>
+                - Aumentar número de árvores<br>
+                - Aumentar profundidade máxima<br>
+                - Adicionar variáveis relevantes<br>
+                - Verificar qualidade dos dados
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Se overfitting:</strong><br>
+                - Reduzir profundidade máxima<br>
+                - Aumentar amostras mín. split/folha<br>
+                - Remover variáveis redundantes<br>
+                - Usar validação espacial
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 13: PRÁTICA NO TAIPA -->
+      <!-- ============================================ -->
+      <section>
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Hora da prática!</h3>
+          <p>Vamos treinar o modelo para a espécie que vocês escolheram!</p>
+          <div class="box-blue">
+            Acesse: <strong>taipa.higuchip.com</strong>
+          </div>
+          <p>O TAIPA organiza a modelagem em <strong>4 abas</strong>:</p>
+          <ol>
+            <li><strong>Preparação de Dados</strong> — Verificar variáveis e pontos</li>
+            <li><strong>Treinamento</strong> — Treinar o modelo com validação cruzada</li>
+            <li><strong>Avaliação</strong> — Analisar métricas, ROC, matriz de confusão</li>
+            <li><strong>Salvar/Carregar</strong> — Exportar o modelo treinado</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Passo 1: Configurar</h3>
+          <p><span class="step-number">1</span> Acesse a aba <strong>"Modelagem e Resultados"</strong></p>
+          <p><span class="step-number">2</span> No <strong>menu lateral</strong>, verifique os hiperparâmetros (padrão é recomendado)</p>
+          <p><span class="step-number">3</span> Marque <strong>"Usar Validação Cruzada"</strong> (ativado por padrão)</p>
+          <p><span class="step-number">4</span> Selecione <strong>"Espacial (Recomendada para SDM)"</strong></p>
+          <p><span class="step-number">5</span> Configure: <strong>5 folds</strong>, buffer <strong>10 km</strong></p>
+          <div class="box">
+            <strong>Dica:</strong> Não precisa alterar os hiperparâmetros na primeira vez. Os valores padrão são otimizados para SDM.
+          </div>
+        </section>
+
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Passo 2: Preparar e Treinar</h3>
+          <p><span class="step-number">6</span> Na aba <strong>"Preparação de Dados"</strong>, verifique as variáveis selecionadas</p>
+          <p><span class="step-number">7</span> Confirme os números: presenças, pseudo-ausências, total</p>
+          <p><span class="step-number">8</span> Na aba <strong>"Treinamento"</strong>, clique em <strong>"Treinar Modelo"</strong></p>
+          <p><span class="step-number">9</span> Aguarde a barra de progresso (cada fold é treinado separadamente)</p>
+          <div class="box-blue">
+            O TAIPA mostra o progresso fold a fold. Com 5 folds e 500 árvores, o treinamento leva poucos segundos.
+          </div>
+        </section>
+
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Passo 3: Analisar Resultados</h3>
+          <p><span class="step-number">10</span> Observe as <strong>métricas por fold</strong> (tabela + boxplot)</p>
+          <p><span class="step-number">11</span> Verifique as <strong>métricas médias</strong>: AUC, Acurácia, Sensibilidade</p>
+          <p><span class="step-number">12</span> Analise o gráfico de <strong>importância das variáveis</strong></p>
+          <p><span class="step-number">13</span> Na aba <strong>"Avaliação"</strong>: curva ROC, matriz de confusão, curvas de resposta</p>
+          <div class="box-warning">
+            <strong>Se AUC médio &lt; 0.6:</strong> Revise variáveis, hiperparâmetros ou qualidade dos dados.
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 14: RESUMO -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Resumo da Aula</h2>
+        <ul>
+          <li><strong>Preparação:</strong> presenças + pseudo-ausências + variáveis = X e y</li>
+          <li><strong>Treino-teste:</strong> 80/20 estratificado</li>
+          <li><strong>Hiperparâmetros:</strong> n. árvores, profundidade, amostras mín.</li>
+          <li><strong>K-Fold CV:</strong> métricas mais robustas que um split único</li>
+          <li><strong>CV espacial:</strong> essencial para SDM (evita autocorrelação)</li>
+          <li><strong>Métricas:</strong> AUC-ROC, Sensibilidade, TSS</li>
+          <li><strong>Importância das variáveis:</strong> quais fatores climáticos importam</li>
+          <li><strong>Overfitting vs. Underfitting:</strong> equilíbrio via validação</li>
+        </ul>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 15: PRÓXIMA AULA -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Próxima Aula</h2>
+        <div class="box">
+          <strong>Aula 6: Projeção Espacial</strong><br><br>
+          Transformar o modelo treinado em um <strong>MAPA de adequabilidade ambiental</strong> para a espécie.
+        </div>
+        <p><strong>Preparação:</strong> Certifiquem-se de ter o modelo treinado no TAIPA.</p>
+        <br>
+        <div class="box center">
+          <h3>Dúvidas?</h3>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: false,
+      hash: true,
+      transition: 'slide',
+      slideNumber: true,
+      plugins: [ ]
+    });
+  </script>
+</body>
+</html>
