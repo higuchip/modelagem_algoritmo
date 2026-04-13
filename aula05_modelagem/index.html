@@ -261,18 +261,25 @@
           <h2>Preparação dos Dados</h2>
           <h3>Montando o conjunto de dados</h3>
           <p>Precisamos juntar tudo que preparamos nas aulas anteriores em uma <strong>tabela única</strong> para o modelo aprender.</p>
-          <div class="diagram">
-Presenças (GBIF)         →  label = 1 (presente)
-  + variáveis bioclimáticas
-                                                    →  TABELA FINAL
-Pseudo-ausências (buffer)  →  label = 0 (ausente)       X + y
-  + variáveis bioclimáticas
+          <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+            <div style="flex: 1; display: flex; gap: 8px;">
+              <div class="box" style="flex: 1; padding: 6px 10px; margin: 0;">
+                <strong style="color: var(--main-color); font-size: 0.7em;">Presenças (GBIF)</strong><br>
+                <span style="font-size: 0.55em;">Onde foi encontrada + bioclimáticas → <strong>y = 1</strong></span>
+              </div>
+              <div class="box" style="flex: 1; border-color: var(--warning-color); padding: 6px 10px; margin: 0;">
+                <strong style="color: var(--warning-color); font-size: 0.7em;">Pseudo-ausências</strong><br>
+                <span style="font-size: 0.55em;">Onde provavelmente não está + bioclimáticas → <strong>y = 0</strong></span>
+              </div>
+            </div>
+            <div style="font-size: 1.5em; color: var(--main-color);">→</div>
+            <div style="flex: 0.55;">
+              <div class="box-blue" style="text-align: center; padding: 8px; margin: 0;">
+                <strong style="font-size: 0.75em;">Tabela Final</strong><br>
+                <span style="font-size: 0.55em;"><strong>X</strong> = bioclimáticas<br><strong>y</strong> = presença (1) / ausência (0)</span>
+              </div>
+            </div>
           </div>
-          <p>O modelo recebe duas coisas:</p>
-          <ul>
-            <li><strong>X (features):</strong> matriz com as variáveis bioclimáticas de cada ponto</li>
-            <li><strong>y (labels):</strong> vetor com 1 (presença) ou 0 (ausência)</li>
-          </ul>
         </section>
 
         <section>
@@ -377,86 +384,121 @@ Pseudo-ausências (buffer)  →  label = 0 (ausente)       X + y
       <section>
         <section>
           <h2>Random Forest: Hiperparâmetros</h2>
-          <h3>Relembrando</h3>
-          <p>Na Aula 1, vimos que Random Forest é uma <strong>equipe de detetives</strong> — muitas árvores de decisão votando juntas.</p>
+          <h3>O que são hiperparâmetros?</h3>
           <div class="box">
-            Agora vamos entender os <strong>"botões de ajuste"</strong> (hiperparâmetros) que controlam como o modelo aprende.
+            <strong>Hiperparâmetros</strong> são configurações que <strong>nós definimos antes</strong> do treinamento. O modelo não aprende esses valores sozinho — somos nós que escolhemos.
           </div>
-          <p>Hiperparâmetros são configurações que <strong>nós definimos antes</strong> do treinamento. O modelo não os aprende sozinho.</p>
+          <p>Configurações diferentes produzem modelos diferentes. Vamos ver as 4 principais e o <strong>efeito prático</strong> de cada uma na modelagem da Araucária.</p>
         </section>
 
         <section>
-          <h2>Random Forest: Hiperparâmetros</h2>
-          <h3>Os 4 principais</h3>
-          <table>
-            <thead>
-              <tr><th>Hiperparâmetro</th><th>O que controla</th><th>Analogia</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>N. de Árvores</strong></td>
-                <td>Quantas árvores de decisão</td>
-                <td>Quantos detetives na equipe</td>
-              </tr>
-              <tr>
-                <td><strong>Profundidade Máx.</strong></td>
-                <td>Quantas perguntas cada árvore faz</td>
-                <td>Quantas perguntas cada detetive pode fazer</td>
-              </tr>
-              <tr>
-                <td><strong>Amostras Mín. Split</strong></td>
-                <td>Mínimo de dados para dividir um nó</td>
-                <td>Mínimo de evidências para abrir investigação</td>
-              </tr>
-              <tr>
-                <td><strong>Amostras Mín. Folha</strong></td>
-                <td>Mínimo de dados no nó final</td>
-                <td>Mínimo de casos para dar veredito</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Random Forest: Hiperparâmetros</h2>
-          <h3>Profundidade: raso vs. profundo</h3>
-          <div class="columns">
+          <h2>Hiperparâmetros</h2>
+          <h3>1. Número de Análises (N. Árvores)</h3>
+          <p>O modelo gera <strong>várias análises independentes</strong> e combina por votação:</p>
+          <div class="columns" style="gap: 10px;">
             <div class="column">
-              <div class="box">
-                <strong>Árvore rasa</strong> (max_depth = 5)<br>
-                Poucas perguntas, modelo simples<br>
-                <em>Risco: <span class="highlight">underfitting</span></em>
+              <div class="box-warning" style="padding: 8px 10px; text-align: center;">
+                <strong>50 análises</strong><br>
+                <span class="small">
+                  Análise 1: presente<br>
+                  Análise 2: ausente<br>
+                  Análise 3: presente<br><br>
+                  Resultado: 2×1<br>
+                  <strong style="color: var(--warning-color);">Instável</strong> — muda a cada rodada
+                </span>
               </div>
             </div>
             <div class="column">
-              <div class="box-warning">
-                <strong>Árvore profunda</strong> (max_depth = 50)<br>
-                Muitas perguntas, modelo complexo<br>
-                <em>Risco: <span class="highlight">overfitting</span></em>
+              <div class="box" style="padding: 8px 10px; text-align: center;">
+                <strong>500 análises</strong><br>
+                <span class="small">
+                  Análise 1: presente<br>
+                  Análise 2: presente<br>
+                  ... (500 votam)<br><br>
+                  Resultado: 420×80<br>
+                  <strong style="color: var(--main-color);">Estável e confiável</strong>
+                </span>
               </div>
             </div>
           </div>
-          <div class="box">
-            O ideal está no <strong>meio-termo</strong>: profundidade suficiente para captar padrões reais, mas não tanta que decore ruído.
+          <p class="small" style="text-align: center; margin-top: 4px;">Recomendado: <strong>500</strong> (padrão TAIPA). Aumentar não causa overfitting, só fica mais lento.</p>
+        </section>
+
+        <section>
+          <h2>Hiperparâmetros</h2>
+          <h3>2. Profundidade Máxima</h3>
+          <p>Cada análise faz <strong>perguntas sequenciais</strong> sobre variáveis climáticas. A profundidade limita quantas:</p>
+          <div class="columns" style="gap: 10px;">
+            <div class="column">
+              <div class="box-warning" style="padding: 6px 10px;">
+                <strong style="font-size: 0.7em;">Profundidade = 2</strong><br>
+                <span style="font-size: 0.55em;">
+                  Temp. > 18°C? → Precip. > 1200mm? → <strong>FIM</strong><br>
+                  Só 2 perguntas → <strong style="color: var(--warning-color);">perde nuances (underfitting)</strong>
+                </span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box" style="padding: 6px 10px;">
+                <strong style="font-size: 0.7em;">Profundidade = 20</strong><br>
+                <span style="font-size: 0.55em;">
+                  Temp.? → Precip.? → Sazonalidade? → Temp.mín? → ...<br>
+                  20 perguntas → <strong style="color: var(--warning-color);">decora ruído (overfitting)</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="box" style="padding: 6px 12px;">
+            O ideal é o <strong>meio-termo (10–30)</strong>: perguntas suficientes para captar padrões climáticos reais. Padrão TAIPA: <strong>20</strong>.
           </div>
         </section>
 
         <section>
-          <h2>Random Forest: Hiperparâmetros</h2>
-          <h3>Valores recomendados para SDM</h3>
+          <h2>Hiperparâmetros</h2>
+          <h3>3. Amostras Mínimas (Split e Folha)</h3>
+          <p>Controlam a <strong>prudência</strong> do modelo ao criar regras. Exemplo: dividir pontos por temperatura.</p>
+          <div class="columns" style="gap: 10px;">
+            <div class="column">
+              <div class="box-warning" style="padding: 8px 10px;">
+                <strong>Mín. Split = 2</strong> <span class="small">(pouco exigente)</span><br>
+                <span class="small">
+                  Grupo com 3 pontos → <strong>divide</strong> (3 ≥ 2)<br>
+                  Subgrupo A: 1 ponto<br>
+                  Subgrupo B: 2 pontos<br><br>
+                  <strong style="color: var(--warning-color);">Regra baseada em quase nada!</strong>
+                </span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box" style="padding: 8px 10px;">
+                <strong>Mín. Split = 5</strong> <span class="small">(mais exigente)</span><br>
+                <span class="small">
+                  Grupo com 3 pontos → <strong>não divide</strong> (3 < 5)<br>
+                  Mantém o grupo junto<br><br><br>
+                  <strong style="color: var(--main-color);">Mais seguro, menos ruído</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+          <p class="small" style="margin-top: 4px;"><strong>Mín. Split</strong> (padrão: 5): mínimo de pontos para dividir um grupo. <strong>Mín. Folha</strong> (padrão: 2): mínimo de pontos em cada grupo final.</p>
+        </section>
+
+        <section>
+          <h2>Hiperparâmetros</h2>
+          <h3>Resumo e valores recomendados</h3>
           <table>
             <thead>
-              <tr><th>Hiperparâmetro</th><th>Range típico</th><th>Padrão no TAIPA</th></tr>
+              <tr><th>Configuração</th><th>Padrão TAIPA</th><th>Se muito baixo</th><th>Se muito alto</th></tr>
             </thead>
             <tbody>
-              <tr><td>Número de Árvores</td><td>300 - 1000</td><td><strong>500</strong></td></tr>
-              <tr><td>Profundidade Máxima</td><td>10 - 30</td><td><strong>20</strong></td></tr>
-              <tr><td>Amostras Mín. para Split</td><td>5 - 10</td><td><strong>5</strong></td></tr>
-              <tr><td>Amostras Mín. por Folha</td><td>1 - 3</td><td><strong>2</strong></td></tr>
+              <tr><td><strong>N. Árvores</strong></td><td>500</td><td>Resultado instável</td><td>Só fica mais lento</td></tr>
+              <tr><td><strong>Profundidade</strong></td><td>20</td><td>Perde padrões reais</td><td>Decora ruído</td></tr>
+              <tr><td><strong>Mín. Split</strong></td><td>5</td><td>Regras com poucos dados</td><td>Modelo simplificado</td></tr>
+              <tr><td><strong>Mín. Folha</strong></td><td>2</td><td>Grupos finais frágeis</td><td>Modelo simplificado</td></tr>
             </tbody>
           </table>
-          <div class="box-blue">
-            <strong>No TAIPA:</strong> Esses valores já vêm pré-configurados no menu lateral! Para a maioria dos casos, os padrões funcionam bem.
+          <div class="box-blue" style="padding: 8px 12px;">
+            <strong>No TAIPA:</strong> esses valores já vêm pré-configurados. Para a maioria dos casos, os padrões funcionam bem!
           </div>
         </section>
       </section>
@@ -605,11 +647,11 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
                           PREDITO pelo modelo
                        Presente     Ausente
               ┌──────────────┬──────────────┐
-   Presente   │      TP      │      FN      │
+   Presente   │      VP      │      FN      │
    REAL       │  (acertou    │   (perdeu    │
               │   presença)  │   presença)  │
               ├──────────────┼──────────────┤
-   Ausente    │      FP      │      TN      │
+   Ausente    │      FP      │      VN      │
               │  (falso      │  (acertou    │
               │   alarme)    │   ausência)  │
               └──────────────┴──────────────┘
@@ -622,7 +664,7 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
           <div class="columns">
             <div class="column">
               <div class="box">
-                <strong>TP</strong> — Alarme toca e tinha incêndio<br>
+                <strong>VP</strong> — Alarme toca e tinha incêndio<br>
                 <em>Salvou a floresta!</em>
               </div>
               <div class="box-warning">
@@ -636,7 +678,7 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
                 <em>Equipe vai à toa, mas sem dano</em>
               </div>
               <div class="box">
-                <strong>TN</strong> — Não tocou e não tinha incêndio<br>
+                <strong>VN</strong> — Não tocou e não tinha incêndio<br>
                 <em>Tudo certo!</em>
               </div>
             </div>
@@ -648,69 +690,153 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
           <h3>Métricas derivadas da matriz</h3>
           <table>
             <thead>
-              <tr><th>Métrica</th><th>Fórmula simplificada</th><th>Pergunta que responde</th></tr>
+              <tr><th>Métrica</th><th>Fórmula</th><th>O que mede</th><th>Exemplo com Araucária</th></tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>Acurácia</strong></td>
-                <td>(TP + TN) / Total</td>
-                <td>No geral, quantas vezes acertei?</td>
+                <td>(VP + VN) / Total</td>
+                <td>% de acertos no geral</td>
+                <td>De 100 fragmentos, em quantos o modelo acertou?</td>
               </tr>
               <tr>
                 <td><strong>Precisão</strong></td>
-                <td>TP / (TP + FP)</td>
-                <td>Quando disse "presente", estava certo?</td>
+                <td>VP / (VP + FP)</td>
+                <td>Confiabilidade do "sim"</td>
+                <td>Dos que o modelo disse "tem Araucária", quantos realmente tinham?</td>
               </tr>
               <tr>
                 <td><strong>Sensibilidade</strong></td>
-                <td>TP / (TP + FN)</td>
-                <td>Das presenças reais, quantas encontrei?</td>
+                <td>VP / (VP + FN)</td>
+                <td>Capacidade de encontrar</td>
+                <td>Das áreas onde a Araucária existe, quantas o modelo encontrou?</td>
               </tr>
               <tr>
                 <td><strong>F1-Score</strong></td>
-                <td>Média harmônica Prec/Sens</td>
-                <td>Equilíbrio entre precisão e sensibilidade</td>
+                <td>Média harmônica</td>
+                <td>Equilíbrio Prec/Sens</td>
+                <td>Nota geral que penaliza se uma das duas for muito baixa</td>
               </tr>
             </tbody>
           </table>
-          <div class="box">
-            Para SDM, <strong>Sensibilidade</strong> é especialmente importante — queremos minimizar FN e encontrar todas as áreas de ocorrência potencial.
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>Exemplo prático: modelo da Araucária</h3>
+          <p>Testamos o modelo em <strong>100 fragmentos florestais</strong> onde já sabíamos se a Araucária estava presente ou não:</p>
+          <table style="width: 80%; margin: 10px auto;">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th colspan="2" style="text-align: center;">MODELO previu</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th></th>
+                <th style="text-align: center;">Presente</th>
+                <th style="text-align: center;">Ausente</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2" style="background: var(--main-color); color: white; font-weight: bold; text-align: center; width: 40px;">R<br>E<br>A<br>L</td>
+                <td style="font-weight: bold;">Presente</td>
+                <td style="background: #e8f5e9; text-align: center; font-weight: bold;">VP = 35</td>
+                <td style="background: #fff3e0; text-align: center; font-weight: bold;">FN = 10</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Ausente</td>
+                <td style="background: #fff3e0; text-align: center; font-weight: bold;">FP = 15</td>
+                <td style="background: #e8f5e9; text-align: center; font-weight: bold;">VN = 40</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="small" style="text-align: center;">Verde = acertos (VP, VN) &nbsp;|&nbsp; Laranja = erros (FP, FN) &nbsp;|&nbsp; Total: 100 fragmentos</p>
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>Calculando passo a passo</h3>
+          <div style="font-size: 0.75em;">
+            <p><strong>1. Acurácia</strong> = (VP + VN) / Total = (35 + 40) / 100 = <span class="highlight">75%</span></p>
+            <p style="color: #666; margin-left: 20px;">De 100 fragmentos, o modelo acertou 75. Parece bom, mas será que conta toda a história?</p>
+            <p><strong>2. Precisão</strong> = VP / (VP + FP) = 35 / (35 + 15) = 35/50 = <span class="highlight">70%</span></p>
+            <p style="color: #666; margin-left: 20px;">Dos 50 fragmentos que o modelo disse "tem Araucária", 35 realmente tinham. 15 foram alarmes falsos.</p>
+            <p><strong>3. Sensibilidade</strong> = VP / (VP + FN) = 35 / (35 + 10) = 35/45 = <span class="highlight">77,8%</span></p>
+            <p style="color: #666; margin-left: 20px;">Dos 45 fragmentos onde a Araucária existia, o modelo encontrou 35. Mas perdeu 10!</p>
+          </div>
+          <div class="box-warning">
+            <strong>Reflexão:</strong> A acurácia de 75% esconde que o modelo <strong>perdeu 10 fragmentos</strong> com Araucária. Para conservação, esses 10 "perdidos" podem ser populações críticas!
           </div>
         </section>
 
         <section>
           <h2>Métricas de Avaliação</h2>
-          <h3>AUC-ROC</h3>
-          <p>A <strong>AUC</strong> (Area Under the ROC Curve) mede a capacidade do modelo de distinguir entre presença e ausência em <strong>todos os limiares possíveis</strong>.</p>
-          <div class="diagram">
-  Escala de interpretação da AUC:
-
-  0.5        0.6        0.7        0.8        0.9        1.0
-   │──────────│──────────│──────────│──────────│──────────│
-   Aleatório    Fraco     Aceitável     Bom      Excelente
-  (moeda)
-          </div>
-          <div class="box">
-            <strong>AUC é a métrica mais usada</strong> em publicações de SDM. Independe do limiar de corte (threshold).
+          <h3>Precisão vs. Sensibilidade na conservação</h3>
+          <table>
+            <thead>
+              <tr><th></th><th>Alta Precisão</th><th>Alta Sensibilidade</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Foco</strong></td><td>Poucos alarmes falsos (FP baixo)</td><td>Perde poucas presenças reais (FN baixo)</td></tr>
+              <tr><td><strong>Quando usar</strong></td><td>Recursos limitados — cada hectare protegido custa caro</td><td>Espécie ameaçada — perder uma população é inaceitável</td></tr>
+            </tbody>
+          </table>
+          <div class="box-warning" style="padding: 6px 12px;">
+            <strong>Araucária:</strong> melhor ir a campo e não encontrar (FP) do que deixar de proteger uma população real (FN). <strong>Sensibilidade tende a ser mais importante!</strong>
           </div>
         </section>
 
         <section>
           <h2>Métricas de Avaliação</h2>
-          <h3>TSS (True Skill Statistic)</h3>
-          <div class="box">
-            <strong>TSS = Sensibilidade + Especificidade - 1</strong>
+          <h3>Qual métrica priorizar? Depende do objetivo!</h3>
+          <table>
+            <thead>
+              <tr><th>Situação</th><th>Priorizar</th><th>Por quê</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Criar unidade de conservação (verba limitada)</td>
+                <td><strong>Precisão</strong></td>
+                <td>Cada hectare custa caro — precisa acertar</td>
+              </tr>
+              <tr>
+                <td>Buscar populações para coleta de sementes</td>
+                <td><strong>Sensibilidade</strong></td>
+                <td>Não pode perder nenhuma população</td>
+              </tr>
+              <tr>
+                <td>Plano de manejo / publicação científica</td>
+                <td><strong>F1-Score</strong></td>
+                <td>Equilíbrio entre não perder e não desperdiçar</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="small" style="margin-top: 6px;"><strong>Não existe métrica "melhor".</strong> A escolha depende da <strong>pergunta ecológica</strong> e das <strong>consequências dos erros</strong>.</p>
+        </section>
+
+        <section>
+          <h2>Métricas de Avaliação</h2>
+          <h3>AUC e TSS</h3>
+          <p>Duas métricas muito usadas em SDM que resumem a qualidade geral do modelo:</p>
+          <table>
+            <thead>
+              <tr><th>Valor</th><th>AUC <span class="small">(0 a 1)</span></th><th>TSS <span class="small">(-1 a +1)</span></th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="color: #c0392b;"><strong>Ruim</strong></td><td>≤ 0,6 — não aprendeu nada</td><td>≤ 0 — pior que chutar</td></tr>
+              <tr><td style="color: var(--warning-color);"><strong>Fraco</strong></td><td>0,6–0,7</td><td>0,0–0,4</td></tr>
+              <tr><td><strong>Aceitável</strong></td><td>0,7–0,8</td><td>0,4–0,6</td></tr>
+              <tr><td style="color: var(--main-color);"><strong>Bom</strong></td><td>0,8–0,9</td><td>0,6–0,8</td></tr>
+              <tr><td style="color: var(--main-color);"><strong>Excelente</strong></td><td>> 0,9 (cuidado: overfitting?)</td><td>> 0,8</td></tr>
+            </tbody>
+          </table>
+          <div class="box" style="padding: 6px 12px;">
+            <strong>AUC</strong> = o quanto o modelo consegue separar presenças de ausências.<br>
+            <strong>TSS</strong> = combina sensibilidade e especificidade. Funciona bem mesmo quando há muito mais ausências do que presenças nos dados (o que é comum em SDM).
           </div>
-          <div class="diagram">
-  -1.0       0.0        0.4        0.6        0.8        1.0
-   │──────────│──────────│──────────│──────────│──────────│
-  Pior que   Aleatório  Aceitável     Bom      Excelente  Perfeito
-  aleatório
-          </div>
-          <ul>
-            <li>Combina sensibilidade com especificidade (<strong>-1 a +1</strong>)</li>
-            <li><strong>Não depende da prevalência</strong> — recomendado para SDM</li>
-          </ul>
         </section>
       </section>
 
