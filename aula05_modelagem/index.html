@@ -660,28 +660,36 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
 
         <section>
           <h2>Métricas de Avaliação</h2>
-          <h3>Analogia: detector de incêndio florestal</h3>
+          <h3>Na prática: expedição de campo</h3>
+          <p style="font-size: 0.7em; margin-bottom: 6px;">Imagine que sua equipe usa o modelo para decidir <strong>quais fragmentos visitar</strong> em busca de Araucária:</p>
           <div class="columns">
             <div class="column">
-              <div class="box">
-                <strong>VP</strong> — Alarme toca e tinha incêndio<br>
-                <em>Salvou a floresta!</em>
+              <div class="box" style="padding: 8px 10px;">
+                <strong style="color: var(--main-color);">VP — Acerto de presença</strong><br>
+                <span class="small">Modelo disse "tem Araucária" → equipe vai a campo → <strong>confirma!</strong><br>
+                📋 Fragmento entra no plano de conservação.</span>
               </div>
-              <div class="box-warning">
-                <strong>FN</strong> — NÃO tocou e tinha incêndio<br>
-                <em>PERIGOSO! Floresta queima!</em>
+              <div class="box-warning" style="padding: 8px 10px;">
+                <strong style="color: #c0392b;">FN — Presença perdida</strong><br>
+                <span class="small">Modelo disse "não tem" → ninguém foi verificar → <strong>área desmatada.</strong><br>
+                🚨 População relictual perdida para sempre.</span>
               </div>
             </div>
             <div class="column">
-              <div class="box" style="border-color: #999;">
-                <strong>FP</strong> — Alarme toca sem incêndio<br>
-                <em>Equipe vai à toa, mas sem dano</em>
+              <div class="box" style="border-color: #999; padding: 8px 10px;">
+                <strong style="color: #7f8c8d;">FP — Alarme falso</strong><br>
+                <span class="small">Modelo disse "tem" → equipe vai → <strong>não encontra.</strong><br>
+                ⚠️ Gastou diária, combustível e tempo — mas sem dano ambiental.</span>
               </div>
-              <div class="box">
-                <strong>VN</strong> — Não tocou e não tinha incêndio<br>
-                <em>Tudo certo!</em>
+              <div class="box" style="padding: 8px 10px;">
+                <strong style="color: var(--main-color);">VN — Acerto de ausência</strong><br>
+                <span class="small">Modelo disse "não tem" → realmente não tinha.<br>
+                ✅ Equipe não perdeu tempo, tudo certo.</span>
               </div>
             </div>
+          </div>
+          <div class="box-warning" style="padding: 6px 12px; margin-top: 6px;">
+            <strong>Para conservação, o erro mais grave é o FN</strong> — perder uma população real é irreversível. Um FP só custa uma viagem a campo.
           </div>
         </section>
 
@@ -774,18 +782,36 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
 
         <section>
           <h2>Métricas de Avaliação</h2>
-          <h3>Precisão vs. Sensibilidade na conservação</h3>
-          <table>
-            <thead>
-              <tr><th></th><th>Alta Precisão</th><th>Alta Sensibilidade</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>Foco</strong></td><td>Poucos alarmes falsos (FP baixo)</td><td>Perde poucas presenças reais (FN baixo)</td></tr>
-              <tr><td><strong>Quando usar</strong></td><td>Recursos limitados — cada hectare protegido custa caro</td><td>Espécie ameaçada — perder uma população é inaceitável</td></tr>
-            </tbody>
-          </table>
-          <div class="box-warning" style="padding: 6px 12px;">
-            <strong>Araucária:</strong> melhor ir a campo e não encontrar (FP) do que deixar de proteger uma população real (FN). <strong>Sensibilidade tende a ser mais importante!</strong>
+          <h3>Precisão vs. Sensibilidade: cenário real</h3>
+          <p style="font-size: 0.72em;">O estado de SC tem verba para fiscalizar <strong>50 fragmentos</strong>. O modelo indicou 80 como "com Araucária". Na realidade, 60 dos 80 realmente têm.</p>
+          <div class="columns" style="gap: 10px;">
+            <div class="column">
+              <div class="box" style="padding: 8px 10px;">
+                <strong style="font-size: 0.8em;">Estratégia A: Priorizar Precisão</strong><br>
+                <span class="small">
+                  Visita os 50 mais prováveis<br>
+                  → 45 confirmados, 5 alarmes falsos<br>
+                  → <strong style="color: var(--main-color);">90% de aproveitamento</strong><br>
+                  → Mas <strong style="color: #c0392b;">15 populações reais</strong> ficaram de fora<br><br>
+                  <em>Bom quando: verba é curta, cada visita custa caro</em>
+                </span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning" style="padding: 8px 10px;">
+                <strong style="font-size: 0.8em;">Estratégia B: Priorizar Sensibilidade</strong><br>
+                <span class="small">
+                  Visita todos os 80 indicados<br>
+                  → Encontra <strong>todas as 60</strong> populações reais<br>
+                  → <strong style="color: var(--warning-color);">20 viagens "à toa"</strong><br>
+                  → <strong style="color: var(--main-color);">Nenhuma população perdida</strong><br><br>
+                  <em>Bom quando: espécie ameaçada, perder = irreversível</em>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="box-blue" style="padding: 6px 12px; margin-top: 4px;">
+            <strong>Araucária (criticamente ameaçada):</strong> Estratégia B é mais segura. Melhor gastar 20 diárias extras do que perder populações que levaram séculos para se estabelecer.
           </div>
         </section>
 
@@ -1028,6 +1054,34 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
           <p><span class="step-number">13</span> Na aba <strong>"Avaliação"</strong>: curva ROC, matriz de confusão, curvas de resposta</p>
           <div class="box-warning">
             <strong>Se AUC médio &lt; 0.6:</strong> Revise variáveis, hiperparâmetros ou qualidade dos dados.
+          </div>
+        </section>
+
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Checklist: "Meu modelo está pronto?"</h3>
+          <p style="font-size: 0.72em;">Antes de usar o modelo para gerar mapas ou escrever um relatório, passe por estas 4 perguntas:</p>
+          <div style="font-size: 0.75em;">
+            <div class="box" style="padding: 8px 12px; margin: 6px 0;">
+              <strong>1. AUC da CV espacial está acima de 0.7?</strong><br>
+              <span class="small">Se sim → modelo aceitável para relatório técnico ou plano de manejo.<br>
+              Se não → revise variáveis ou hiperparâmetros antes de prosseguir.</span>
+            </div>
+            <div class="box" style="padding: 8px 12px; margin: 6px 0;">
+              <strong>2. A variável mais importante faz sentido ecológico?</strong><br>
+              <span class="small">Ex: BIO6 (temp. mínima) para Araucária faz sentido — geada é fator limitante no Sul.<br>
+              Se a variável mais importante for estranha, o modelo pode estar aprendendo ruído.</span>
+            </div>
+            <div class="box-warning" style="padding: 8px 12px; margin: 6px 0;">
+              <strong>3. A diferença treino vs. teste é grande?</strong><br>
+              <span class="small">AUC treino = 0.99, AUC teste = 0.65 → <strong>overfitting!</strong> O modelo decorou os dados.<br>
+              Ação: reduza profundidade, aumente amostras mínimas, ou use CV espacial.</span>
+            </div>
+            <div class="box-blue" style="padding: 8px 12px; margin: 6px 0;">
+              <strong>4. A sensibilidade está adequada para o objetivo?</strong><br>
+              <span class="small">Para conservação de espécie ameaçada → sensibilidade > 0.7 é desejável.<br>
+              Para consultoria com orçamento limitado → precisão alta pode ser mais útil.</span>
+            </div>
           </div>
         </section>
       </section>
