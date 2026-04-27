@@ -659,37 +659,32 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
         </section>
 
         <section>
-          <h2>Métricas de Avaliação</h2>
-          <h3>Na prática: expedição de campo</h3>
-          <p style="font-size: 0.7em; margin-bottom: 6px;">Imagine que sua equipe usa o modelo para decidir <strong>quais fragmentos visitar</strong> em busca de Araucária:</p>
-          <div class="columns">
+          <h2>Na prática: expedição de campo</h2>
+          <p style="font-size: 0.6em; margin: 2px 0 6px;">Equipe usa o modelo para decidir <strong>quais fragmentos visitar</strong> em busca de Araucária:</p>
+          <div class="columns" style="gap: 8px;">
             <div class="column">
-              <div class="box" style="padding: 8px 10px;">
-                <strong style="color: var(--main-color);">VP — Acerto de presença</strong><br>
-                <span class="small">Modelo disse "tem Araucária" → equipe vai a campo → <strong>confirma!</strong><br>
-                📋 Fragmento entra no plano de conservação.</span>
+              <div class="box" style="padding: 5px 8px; margin: 0 0 5px;">
+                <strong style="color: var(--main-color); font-size: 0.7em;">VP — Acerto de presença</strong>
+                <div style="font-size: 0.55em; line-height: 1.3;">Modelo disse "tem" → equipe confirma.<br>📋 Entra no plano de conservação.</div>
               </div>
-              <div class="box-warning" style="padding: 8px 10px;">
-                <strong style="color: #c0392b;">FN — Presença perdida</strong><br>
-                <span class="small">Modelo disse "não tem" → ninguém foi verificar → <strong>área desmatada.</strong><br>
-                🚨 População relictual perdida para sempre.</span>
+              <div class="box-warning" style="padding: 5px 8px; margin: 0;">
+                <strong style="color: #c0392b; font-size: 0.7em;">FN — Presença perdida</strong>
+                <div style="font-size: 0.55em; line-height: 1.3;">Modelo disse "não tem" → área desmatada.<br>🚨 População perdida.</div>
               </div>
             </div>
             <div class="column">
-              <div class="box" style="border-color: #999; padding: 8px 10px;">
-                <strong style="color: #7f8c8d;">FP — Alarme falso</strong><br>
-                <span class="small">Modelo disse "tem" → equipe vai → <strong>não encontra.</strong><br>
-                ⚠️ Gastou diária, combustível e tempo — mas sem dano ambiental.</span>
+              <div class="box" style="border-color: #999; padding: 5px 8px; margin: 0 0 5px;">
+                <strong style="color: #7f8c8d; font-size: 0.7em;">FP — Alarme falso</strong>
+                <div style="font-size: 0.55em; line-height: 1.3;">Modelo disse "tem" → não encontra.<br>⚠️ Gastou diária, sem dano ambiental.</div>
               </div>
-              <div class="box" style="padding: 8px 10px;">
-                <strong style="color: var(--main-color);">VN — Acerto de ausência</strong><br>
-                <span class="small">Modelo disse "não tem" → realmente não tinha.<br>
-                ✅ Equipe não perdeu tempo, tudo certo.</span>
+              <div class="box" style="padding: 5px 8px; margin: 0;">
+                <strong style="color: var(--main-color); font-size: 0.7em;">VN — Acerto de ausência</strong>
+                <div style="font-size: 0.55em; line-height: 1.3;">Modelo disse "não tem" → não tinha.<br>✅ Tudo certo.</div>
               </div>
             </div>
           </div>
-          <div class="box-warning" style="padding: 6px 12px; margin-top: 6px;">
-            <strong>Para conservação, o erro mais grave é o FN</strong> — perder uma população real é irreversível. Um FP só custa uma viagem a campo.
+          <div class="box-warning" style="padding: 5px 10px; margin-top: 6px; font-size: 0.65em;">
+            <strong>Erro mais grave: FN</strong> — perder uma população é irreversível. Um FP só custa uma viagem.
           </div>
         </section>
 
@@ -781,37 +776,36 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
         </section>
 
         <section>
-          <h2>Métricas de Avaliação</h2>
-          <h3>Precisão vs. Sensibilidade: cenário real</h3>
-          <p style="font-size: 0.72em;">O estado de SC tem verba para fiscalizar <strong>50 fragmentos</strong>. O modelo indicou 80 como "com Araucária". Na realidade, 60 dos 80 realmente têm.</p>
-          <div class="columns" style="gap: 10px;">
+          <h2>Precisão vs. Sensibilidade: cenário real</h2>
+          <p style="font-size: 0.65em; margin: 4px 0;">SC tem verba para 50 fragmentos. Modelo indicou 80 como "com Araucária" — 60 realmente têm.</p>
+          <div class="columns" style="gap: 8px;">
             <div class="column">
-              <div class="box" style="padding: 8px 10px;">
-                <strong style="font-size: 0.8em;">Estratégia A: Priorizar Precisão</strong><br>
-                <span class="small">
+              <div class="box" style="padding: 6px 8px; margin: 0;">
+                <strong style="font-size: 0.7em;">A: Priorizar Precisão</strong>
+                <div style="font-size: 0.55em; line-height: 1.35;">
                   Visita os 50 mais prováveis<br>
-                  → 45 confirmados, 5 alarmes falsos<br>
-                  → <strong style="color: var(--main-color);">90% de aproveitamento</strong><br>
-                  → Mas <strong style="color: #c0392b;">15 populações reais</strong> ficaram de fora<br><br>
-                  <em>Bom quando: verba é curta, cada visita custa caro</em>
-                </span>
+                  → 45 confirmados, 5 falsos<br>
+                  → <strong style="color: var(--main-color);">90% aproveitamento</strong><br>
+                  → <strong style="color: #c0392b;">15 populações</strong> de fora<br>
+                  <em style="color:#666;">Bom: verba curta</em>
+                </div>
               </div>
             </div>
             <div class="column">
-              <div class="box-warning" style="padding: 8px 10px;">
-                <strong style="font-size: 0.8em;">Estratégia B: Priorizar Sensibilidade</strong><br>
-                <span class="small">
-                  Visita todos os 80 indicados<br>
-                  → Encontra <strong>todas as 60</strong> populações reais<br>
+              <div class="box-warning" style="padding: 6px 8px; margin: 0;">
+                <strong style="font-size: 0.7em;">B: Priorizar Sensibilidade</strong>
+                <div style="font-size: 0.55em; line-height: 1.35;">
+                  Visita todos os 80<br>
+                  → encontra <strong>as 60</strong> reais<br>
                   → <strong style="color: var(--warning-color);">20 viagens "à toa"</strong><br>
-                  → <strong style="color: var(--main-color);">Nenhuma população perdida</strong><br><br>
-                  <em>Bom quando: espécie ameaçada, perder = irreversível</em>
-                </span>
+                  → <strong style="color: var(--main-color);">nenhuma perdida</strong><br>
+                  <em style="color:#666;">Bom: espécie ameaçada</em>
+                </div>
               </div>
             </div>
           </div>
-          <div class="box-blue" style="padding: 6px 12px; margin-top: 4px;">
-            <strong>Araucária (criticamente ameaçada):</strong> Estratégia B é mais segura. Melhor gastar 20 diárias extras do que perder populações que levaram séculos para se estabelecer.
+          <div class="box-blue" style="padding: 5px 10px; margin-top: 6px; font-size: 0.65em;">
+            <strong>Araucária (ameaçada):</strong> Estratégia B é mais segura — 20 diárias extras valem menos que perder populações.
           </div>
         </section>
 
@@ -1058,30 +1052,23 @@ Fold 5:  [treino] [treino] [treino] [treino] [TESTE]
         </section>
 
         <section>
-          <h2>Prática no TAIPA</h2>
-          <h3>Checklist: "Meu modelo está pronto?"</h3>
-          <p style="font-size: 0.72em;">Antes de usar o modelo para gerar mapas ou escrever um relatório, passe por estas 4 perguntas:</p>
-          <div style="font-size: 0.75em;">
-            <div class="box" style="padding: 8px 12px; margin: 6px 0;">
-              <strong>1. AUC da CV espacial está acima de 0.7?</strong><br>
-              <span class="small">Se sim → modelo aceitável para relatório técnico ou plano de manejo.<br>
-              Se não → revise variáveis ou hiperparâmetros antes de prosseguir.</span>
-            </div>
-            <div class="box" style="padding: 8px 12px; margin: 6px 0;">
-              <strong>2. A variável mais importante faz sentido ecológico?</strong><br>
-              <span class="small">Ex: BIO6 (temp. mínima) para Araucária faz sentido — geada é fator limitante no Sul.<br>
-              Se a variável mais importante for estranha, o modelo pode estar aprendendo ruído.</span>
-            </div>
-            <div class="box-warning" style="padding: 8px 12px; margin: 6px 0;">
-              <strong>3. A diferença treino vs. teste é grande?</strong><br>
-              <span class="small">AUC treino = 0.99, AUC teste = 0.65 → <strong>overfitting!</strong> O modelo decorou os dados.<br>
-              Ação: reduza profundidade, aumente amostras mínimas, ou use CV espacial.</span>
-            </div>
-            <div class="box-blue" style="padding: 8px 12px; margin: 6px 0;">
-              <strong>4. A sensibilidade está adequada para o objetivo?</strong><br>
-              <span class="small">Para conservação de espécie ameaçada → sensibilidade > 0.7 é desejável.<br>
-              Para consultoria com orçamento limitado → precisão alta pode ser mais útil.</span>
-            </div>
+          <h2>Checklist: "Meu modelo está pronto?"</h2>
+          <p style="font-size: 0.6em; margin: 2px 0 4px;">Antes de gerar mapas ou escrever relatório, passe por estas 4 perguntas:</p>
+          <div class="box" style="padding: 5px 10px; margin: 4px 0;">
+            <strong style="font-size: 0.7em;">1. AUC da CV espacial está acima de 0.7?</strong>
+            <div style="font-size: 0.55em; line-height: 1.3;">Sim → aceitável para relatório. Não → revise variáveis ou hiperparâmetros.</div>
+          </div>
+          <div class="box" style="padding: 5px 10px; margin: 4px 0;">
+            <strong style="font-size: 0.7em;">2. A variável mais importante faz sentido ecológico?</strong>
+            <div style="font-size: 0.55em; line-height: 1.3;">Ex: BIO6 para Araucária — geada é limitante no Sul. Se for estranha, pode ser ruído.</div>
+          </div>
+          <div class="box-warning" style="padding: 5px 10px; margin: 4px 0;">
+            <strong style="font-size: 0.7em;">3. A diferença treino vs. teste é grande?</strong>
+            <div style="font-size: 0.55em; line-height: 1.3;">AUC treino 0.99 vs teste 0.65 → <strong>overfitting!</strong> Reduza profundidade ou use CV espacial.</div>
+          </div>
+          <div class="box-blue" style="padding: 5px 10px; margin: 4px 0;">
+            <strong style="font-size: 0.7em;">4. A sensibilidade está adequada para o objetivo?</strong>
+            <div style="font-size: 0.55em; line-height: 1.3;">Conservação ameaçada → sensibilidade > 0.7. Consultoria com verba curta → precisão alta.</div>
           </div>
         </section>
       </section>
