@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Projeção Espacial - SDM</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+  <style>
+    :root {
+      --main-color: #2c7a3f;
+      --accent-color: #1a5c2e;
+      --text-color: #333;
+      --background-color: #fff;
+      --box-bg-color: rgba(44, 122, 63, 0.08);
+      --warning-color: #d35400;
+    }
+    body { background-color: var(--background-color); color: var(--text-color); }
+    .reveal .slides { text-align: left; }
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; color: var(--main-color); margin-bottom: 0.5em; font-weight: 600; }
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.4em; margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.1em; margin-bottom: 0.3em; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.4; }
+    .reveal .small { font-size: 0.6em; }
+    .reveal .center { text-align: center; }
+    .reveal .highlight { color: var(--accent-color); font-weight: 600; }
+    .reveal .box { border: 1px solid var(--main-color); padding: 10px 14px; margin: 8px 0; border-radius: 8px; background-color: var(--box-bg-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .reveal .box-warning { border: 1px solid var(--warning-color); padding: 10px 14px; margin: 8px 0; border-radius: 8px; background-color: rgba(211, 84, 0, 0.08); }
+    .reveal .box-blue { border: 1px solid #2980b9; padding: 10px 14px; margin: 8px 0; border-radius: 8px; background-color: rgba(41, 128, 185, 0.08); }
+    .reveal .columns { display: flex; justify-content: space-between; gap: 15px; align-items: center; }
+    .reveal .column { flex: 1; }
+    .reveal img { border: none !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; background: none !important; border-radius: 8px; }
+    .reveal .cite { font-size: 0.6em; font-style: italic; text-align: right; margin-top: 20px; color: #777; }
+    .reveal ol, .reveal ul { margin-left: 0.8em; }
+    .reveal li { margin-bottom: 0.25em; }
+    .reveal .slides section { padding: 10px 40px; }
+    .reveal .step-number { display: inline-block; width: 30px; height: 30px; line-height: 30px; text-align: center; background: var(--main-color); color: white; border-radius: 50%; font-weight: bold; font-size: 0.8em; margin-right: 8px; }
+    .reveal .controls { opacity: 0.6; }
+    .reveal .progress { height: 5px; color: var(--main-color); }
+    .reveal table { font-size: 0.7em; border-collapse: collapse; width: 100%; margin: 10px 0; }
+    .reveal table th { background-color: var(--main-color); color: white; padding: 8px 12px; text-align: left; }
+    .reveal table td { padding: 6px 12px; border-bottom: 1px solid #ddd; }
+    .reveal table tr:nth-child(even) { background-color: #f5f5f5; }
+    .reveal .diagram { font-family: monospace; white-space: pre; line-height: 1.3; font-size: 0.55em; background-color: #f8f9fa; padding: 10px 15px; border-radius: 8px; border: 1px solid #dee2e6; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1: CAPA -->
+      <section>
+        <h1>Projeção Espacial</h1>
+        <h3>Do modelo treinado ao mapa<br>de adequabilidade ambiental</h3>
+        <br>
+        <p>Aula 6 | Mudanças Climáticas</p>
+        <p>Engenharia Florestal - UDESC</p>
+        <p class="small">Prof. Pedro Higuchi</p>
+      </section>
+
+      <!-- SLIDE 2: RECAPITULAÇÃO -->
+      <section>
+        <h2>O que vimos até agora</h2>
+        <ul>
+          <li><strong>Aula 1:</strong> Modelos, algoritmos e Random Forest</li>
+          <li><strong>Aula 2:</strong> Dados de ocorrência (GBIF)</li>
+          <li><strong>Aula 3:</strong> Pseudo-ausências (buffer + exclusão)</li>
+          <li><strong>Aula 4:</strong> Variáveis bioclimáticas (correlação + VIF)</li>
+          <li><strong>Aula 5:</strong> Modelagem RF, validação cruzada espacial, métricas</li>
+        </ul>
+        <div class="box">
+          <strong>Hoje:</strong> vamos transformar o modelo treinado em um <span class="highlight">mapa de adequabilidade</span> — onde a espécie pode ocorrer no Brasil.
+        </div>
+      </section>
+
+      <!-- SLIDE 3: ROTEIRO -->
+      <section>
+        <h2>Roteiro da Aula</h2>
+        <ol>
+          <li>O que é projeção espacial</li>
+          <li>Como o modelo prediz pixel a pixel</li>
+          <li>Mapa de probabilidade vs. mapa binário</li>
+          <li>Threshold (limiar de corte)</li>
+          <li>Cálculo de área adequada</li>
+          <li>Interpretação dos mapas</li>
+          <li>Prática no TAIPA</li>
+        </ol>
+      </section>
+
+      <!-- SLIDE 4: PIPELINE -->
+      <section>
+        <h2>Onde estamos no pipeline?</h2>
+        <div style="font-size: 0.78em;">
+          <p style="color: #999;"><span class="step-number" style="background: #999;">1</span> Buscar espécie no GBIF ✓</p>
+          <p style="color: #999;"><span class="step-number" style="background: #999;">2</span> Gerar pseudo-ausências ✓</p>
+          <p style="color: #999;"><span class="step-number" style="background: #999;">3</span> Selecionar variáveis bioclimáticas ✓</p>
+          <p style="color: #999;"><span class="step-number" style="background: #999;">4</span> Treinar e avaliar o modelo ✓</p>
+          <p><span class="step-number">5</span> <strong>Projeção espacial (mapa atual) ← HOJE</strong></p>
+          <p style="color: #bbb;"><span class="step-number" style="background: #bbb;">6</span> Projeção futura (cenários climáticos)</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: O QUE É PROJEÇÃO ESPACIAL -->
+      <section>
+        <section>
+          <h2>O que é projeção espacial?</h2>
+          <p>Aplicar o modelo treinado sobre <strong>toda a área de estudo</strong> para gerar um mapa contínuo de adequabilidade.</p>
+          <div class="diagram">
+  Modelo treinado          Rasters bioclimáticos
+  (Random Forest)    +     (WorldClim - Brasil)
+        |                         |
+        └─────────┬───────────────┘
+                  ↓
+     Para CADA pixel do mapa:
+     "Qual a probabilidade de presença
+      dadas as condições climáticas?"
+                  ↓
+        MAPA DE ADEQUABILIDADE
+          </div>
+        </section>
+
+        <section>
+          <h2>O que é projeção espacial?</h2>
+          <h3>Da tabela ao mapa</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Treinamento</strong><br>
+                ~200 pontos com<br>variáveis bioclimáticas
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Projeção</strong><br>
+                ~2 milhões de pixels<br>com as mesmas variáveis
+              </div>
+            </div>
+          </div>
+          <div class="box-blue">
+            <strong>No TAIPA:</strong> Resolução de 2.5 min (~5 km/pixel). Área: Brasil completo.
+          </div>
+        </section>
+      </section>
+
+      <!-- SLIDE 6: PREDIÇÃO PIXEL A PIXEL -->
+      <section>
+        <section>
+          <h2>Predição pixel a pixel</h2>
+          <h3>Como funciona</h3>
+          <p>Para cada pixel, o modelo recebe as variáveis bioclimáticas e retorna uma <strong>probabilidade</strong>:</p>
+          <div class="diagram">
+  Pixel (lat=-25.4, lon=-49.3):
+  ┌─────────────────────────────────────┐
+  │ BIO1=16.2  BIO4=4100  BIO12=1400   │
+  └────────────────┬────────────────────┘
+                   ↓
+            Random Forest
+        (500 árvores votam)
+                   ↓
+      Probabilidade = 0.82 (82%)
+          </div>
+          <p>Repetido para <strong>cada pixel válido</strong> do Brasil (~2 milhões).</p>
+        </section>
+
+        <section>
+          <h2>Predição pixel a pixel</h2>
+          <h3>Dados de entrada</h3>
+          <ul>
+            <li>Cada variável = 1 arquivo GeoTIFF (ex: <em>bio1_brazil.tif</em>)</li>
+            <li>Mesmo sistema de coordenadas e resolução</li>
+            <li>Variáveis de temperatura (BIO1-11): divididas por 10</li>
+            <li>Pixels sem dados (oceano) = NoData (-9999)</li>
+          </ul>
+          <div class="box-warning">
+            As variáveis da projeção devem ser <strong>exatamente as mesmas</strong> do treinamento, na mesma escala.
+          </div>
+        </section>
+      </section>
+
+      <!-- SLIDE 7: MAPA DE PROBABILIDADE vs BINÁRIO -->
+      <section>
+        <section>
+          <h2>Dois tipos de mapa</h2>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Mapa de Probabilidade</strong><br>
+                Contínuo: 0.0 a 1.0<br>
+                Escala de cores (Viridis)<br>
+                Mostra <em>gradiente</em>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box">
+                <strong>Mapa Binário</strong><br>
+                Adequado / Inadequado<br>
+                Verde / Cinza<br>
+                Depende do <em>threshold</em>
+              </div>
+            </div>
+          </div>
+          <div class="box">
+            Probabilidade = mais informativo. Binário = mais prático para decisões.
+          </div>
+        </section>
+
+        <section>
+          <h2>Dois tipos de mapa</h2>
+          <h3>Como se relacionam</h3>
+          <div class="diagram">
+  Mapa de Probabilidade       Threshold = 0.5       Mapa Binário
+  ┌──────────────┐                               ┌──────────────┐
+  │ 0.2  0.8  0.6│            ≥ 0.5 ?            │  0    1    1 │
+  │ 0.1  0.9  0.7│   ──────────────────→         │  0    1    1 │
+  │ 0.4  0.3  0.5│           Sim = 1             │  0    0    1 │
+  └──────────────┘           Não = 0             └──────────────┘
+          </div>
+          <p>O threshold é o <strong>ponto de corte</strong> entre "adequado" e "inadequado".</p>
+        </section>
+      </section>
+
+      <!-- SLIDE 8: THRESHOLD -->
+      <section>
+        <section>
+          <h2>Threshold (Limiar de Corte)</h2>
+          <h3>O que é</h3>
+          <div class="diagram">
+  Probabilidade ≥ threshold  →  ADEQUADO  (presença)
+  Probabilidade &lt; threshold  →  INADEQUADO (ausência)
+          </div>
+          <div class="box-warning">
+            A escolha do threshold muda <strong>significativamente</strong> o mapa e a área calculada. Não existe valor "certo" universal.
+          </div>
+        </section>
+
+        <section>
+          <h2>Threshold (Limiar de Corte)</h2>
+          <h3>Métodos disponíveis no TAIPA</h3>
+          <table>
+            <thead>
+              <tr><th>Método</th><th>Como funciona</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Manual</strong></td><td>Você escolhe (padrão: 0.5)</td></tr>
+              <tr><td><strong>Média</strong></td><td>Média das probabilidades preditas</td></tr>
+              <tr><td><strong>Percentil 50</strong></td><td>Mediana das probabilidades</td></tr>
+              <tr><td><strong>Percentil 10</strong></td><td>10% inferior das probabilidades</td></tr>
+              <tr><td><strong>Maximiza TSS</strong></td><td>Sensib. + Especif. - 1 (requer teste)</td></tr>
+              <tr><td><strong>Maximiza Kappa</strong></td><td>Concordância ajustada (requer teste)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Threshold (Limiar de Corte)</h2>
+          <h3>Impacto na área</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <strong>Threshold baixo</strong> (0.2)<br>
+                Mais área "adequada"<br>
+                Menos omissão (FN)<br>
+                Mais comissão (FP)
+              </div>
+            </div>
+            <div class="column">
+              <div class="box-warning">
+                <strong>Threshold alto</strong> (0.8)<br>
+                Menos área "adequada"<br>
+                Mais omissão (FN)<br>
+                Menos comissão (FP)
+              </div>
+            </div>
+          </div>
+          <div class="box">
+            <strong>Conservação</strong>: threshold baixo (capturar toda área potencial).<br>
+            <strong>Plantio comercial</strong>: threshold alto (só alta adequabilidade).
+          </div>
+        </section>
+      </section>
+
+      <!-- SLIDE 9: CÁLCULO DE ÁREA -->
+      <section>
+        <section>
+          <h2>Cálculo de Área</h2>
+          <h3>Do pixel ao km²</h3>
+          <div class="diagram">
+  Resolução: 2.5 min de arco ≈ 5 km
+
+  Área de 1 pixel ≈ 5 km x 5 km ≈ 25 km²
+
+  Área adequada = n. pixels adequados x área do pixel
+          </div>
+          <div class="box">
+            <strong>Exemplo:</strong> 40.000 pixels adequados × 25 km² ≈ 1.000.000 km²
+          </div>
+        </section>
+
+        <section>
+          <h2>Cálculo de Área</h2>
+          <h3>Estatísticas no TAIPA</h3>
+          <p>O TAIPA exibe 3 métricas após a projeção:</p>
+          <table>
+            <thead>
+              <tr><th>Métrica</th><th>O que mostra</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Área Total</strong></td><td>Área total analisada (km²)</td></tr>
+              <tr><td><strong>Área Adequada</strong></td><td>Pixels ≥ threshold (km²)</td></tr>
+              <tr><td><strong>% Adequada</strong></td><td>Proporção adequada para a espécie</td></tr>
+            </tbody>
+          </table>
+          <p>Um <strong>histograma</strong> mostra a distribuição das probabilidades com a linha do threshold.</p>
+        </section>
+      </section>
+
+      <!-- SLIDE 10: INTERPRETAÇÃO -->
+      <section>
+        <section>
+          <h2>Interpretação dos Mapas</h2>
+          <h3>O que o mapa NÃO é</h3>
+          <div class="box-warning">
+            O mapa de adequabilidade <strong>não</strong> é um mapa de presença real! Mostra onde as condições climáticas são <strong>compatíveis</strong>.
+          </div>
+          <p>A espécie pode não estar presente em áreas adequadas por:</p>
+          <ul>
+            <li>Barreiras de dispersão (rios, montanhas)</li>
+            <li>Competição com outras espécies</li>
+            <li>Desmatamento ou uso do solo</li>
+            <li>Variáveis não incluídas no modelo</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Interpretação dos Mapas</h2>
+          <h3>Verificação e problemas</h3>
+          <p>Compare o mapa com os <strong>pontos de treinamento</strong>:</p>
+          <table>
+            <thead>
+              <tr><th>Sinal</th><th>Possível causa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Mapa todo "adequado"</td><td>Threshold muito baixo ou modelo ruim</td></tr>
+              <tr><td>Mapa todo "inadequado"</td><td>Threshold muito alto</td></tr>
+              <tr><td>Padrão fragmentado</td><td>Overfitting no modelo</td></tr>
+              <tr><td>Presenças em áreas inadequadas</td><td>Variáveis ou dados insuficientes</td></tr>
+            </tbody>
+          </table>
+          <div class="box-blue">
+            <strong>No TAIPA:</strong> Marque "Mostrar pontos de treinamento" para sobrepor presenças e pseudo-ausências.
+          </div>
+        </section>
+      </section>
+
+      <!-- SLIDE 11: EXPORTAÇÃO E APLICAÇÕES -->
+      <section>
+        <h2>Exportação e Aplicações</h2>
+        <p>O TAIPA exporta os mapas em <strong>GeoTIFF</strong> (formato raster georreferenciado para QGIS, ArcGIS, R).</p>
+        <div class="columns">
+          <div class="column">
+            <div class="box">
+              <strong>Conservação</strong><br>
+              - Áreas prioritárias<br>
+              - Corredores ecológicos<br>
+              - Espécies ameaçadas
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <strong>Manejo Florestal</strong><br>
+              - Seleção de espécies<br>
+              - Restauração ecológica<br>
+              - Licenciamento ambiental
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: PRÁTICA NO TAIPA -->
+      <section>
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Gerar projeção</h3>
+          <div class="box-blue">
+            Acesse: <strong>taipa.higuchip.com</strong>
+          </div>
+          <p><span class="step-number">1</span> Acesse <strong>"Projeção Espacial do Modelo"</strong></p>
+          <p><span class="step-number">2</span> No menu lateral, selecione o método de threshold</p>
+          <p><span class="step-number">3</span> Clique em <strong>"Gerar Projeção"</strong></p>
+          <p><span class="step-number">4</span> Aguarde o carregamento e a predição</p>
+        </section>
+
+        <section>
+          <h2>Prática no TAIPA</h2>
+          <h3>Analisar e exportar</h3>
+          <p><span class="step-number">5</span> Compare <strong>mapa de probabilidade</strong> com <strong>mapa binário</strong></p>
+          <p><span class="step-number">6</span> Observe: área total, área adequada, %</p>
+          <p><span class="step-number">7</span> Marque <strong>"Mostrar pontos de treinamento"</strong></p>
+          <p><span class="step-number">8</span> Baixe os rasters (probabilidade + binário)</p>
+          <div class="box">
+            <strong>Experimente:</strong> Mude o threshold e observe como a área muda.
+          </div>
+          <div class="box-warning">
+            <strong>Guarde os resultados!</strong> Na próxima aula: projeções futuras.
+          </div>
+        </section>
+      </section>
+
+      <!-- SLIDE 13: RESUMO -->
+      <section>
+        <h2>Resumo da Aula</h2>
+        <ul>
+          <li><strong>Projeção espacial:</strong> aplicar o modelo em todos os pixels</li>
+          <li><strong>Mapa de probabilidade:</strong> contínuo (0-1), mais informativo</li>
+          <li><strong>Mapa binário:</strong> adequado/inadequado, depende do threshold</li>
+          <li><strong>Threshold:</strong> 6 métodos (Manual, Média, Percentis, TSS, Kappa)</li>
+          <li><strong>Área:</strong> n. pixels × área do pixel (km²)</li>
+          <li><strong>Adequabilidade ≠ presença real</strong></li>
+          <li><strong>Exportação:</strong> GeoTIFF para QGIS/ArcGIS/R</li>
+        </ul>
+      </section>
+
+      <!-- SLIDE 14: PRÓXIMA AULA -->
+      <section>
+        <h2>Próxima Aula</h2>
+        <div class="box">
+          <strong>Aula 7: Projeção Futura</strong><br><br>
+          Como a distribuição da espécie muda sob cenários de mudanças climáticas (SSP1-2.6 e SSP5-8.5)?
+        </div>
+        <p><strong>Preparação:</strong> Ter a projeção atual salva no TAIPA.</p>
+        <br>
+        <div class="box center">
+          <h3>Dúvidas?</h3>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: false,
+      hash: true,
+      transition: 'slide',
+      slideNumber: true,
+      plugins: [ ]
+    });
+  </script>
+</body>
+</html>
